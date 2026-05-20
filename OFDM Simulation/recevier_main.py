@@ -19,7 +19,7 @@ metadata_values = lines[-1].strip()
 data_lines = lines[1:-2]
 
 # Read metadata
-original_length, original_len_symbol, N, BANDWIDTH = map(int, metadata_values.split(","))
+original_length, original_len_symbol, N, BANDWIDT,CP_LEN= map(int, metadata_values.split(","))
 
 # Read complex samples
 for line in data_lines:
@@ -40,9 +40,13 @@ for line in data_lines:
 complex_samples = np.array(complex_samples)
 
 # Reshape 1D sample stream into OFDM symbols
-complex_samples = complex_samples.reshape(-1, N)
+complex_samples = complex_samples.reshape(-1, N+CP_LEN)
+
+#remove cyclic prefix
+complex_samples = complex_samples[:,CP_LEN:]
+
 
 frequency_domian_signals = np.fft.fft(complex_samples,axis = 1)
 
 
-demapper(frequency_domian_signals,original_length,original_len_symbol)
+print(demapper(frequency_domian_signals,original_length,original_len_symbol))
