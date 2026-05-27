@@ -4,7 +4,7 @@ from Multipath_channel import multipath_channel
 
 
 
-filename = "/Users/sravanthimanthati/Sourish/OFDM/OFDM Simulation/transmitted_bits.txt"
+filename = "OFDM Simulation/transmitted_bits.txt"
 
 complex_samples = []
 

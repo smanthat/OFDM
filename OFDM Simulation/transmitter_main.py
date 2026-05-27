@@ -13,7 +13,7 @@ T_GI = 0.8e-6 # which should be equal to the time of the multipath channel
 CP_LEN = int(np.ceil(T_GI * BANDWIDTH))
 
 
-with open("/Users/sravanthimanthati/Sourish/OFDM/OFDM Simulation/bits.txt", "r") as f:
+with open("OFDM Simulation/bits.txt", "r") as f:
     bit_string = f.read().strip()
 
 bit_string = "".join(bit_string.split())
@@ -35,7 +35,7 @@ signal = time_domain_signals.flatten()
 
 
 
-with open("/Users/sravanthimanthati/Sourish/OFDM/OFDM Simulation/transmitted_bits.txt", "w") as f:
+with open("OFDM Simulation/transmitted_bits.txt", "w") as f:
     f.write("sample_index,time_seconds,real,imag\n")
 
     for i, sample in enumerate(signal):

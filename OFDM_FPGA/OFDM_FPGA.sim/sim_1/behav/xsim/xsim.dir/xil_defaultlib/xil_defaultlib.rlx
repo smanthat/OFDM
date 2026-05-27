@@ -1,0 +1,7 @@
+0.7
+2020.2
+Nov 14 2025
+19:37:27
+C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.sim/sim_1/behav/xsim/glbl.v,1756381829,verilog,,,,glbl,,uvm,,,,,,
+C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_qpsk_mapper.sv,1779905062,systemVerilog,,,,tb_qpsk_mapper,,uvm,../../../../../../2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sources_1/new/qpsk_mapper.sv,1779905133,systemVerilog,,C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_qpsk_mapper.sv,,qpsk_mapper,,uvm,../../../../../../2025.2/Vivado/data/rsb/busdef,,,,,

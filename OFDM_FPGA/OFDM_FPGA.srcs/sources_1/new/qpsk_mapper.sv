@@ -1,12 +1,33 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 05/27/2026 12:06:08 AM
+// Design Name: 
+// Module Name: qpsk_mapper
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
 
-module qpsk_mapper (
-    input  logic [1:0] bits_in,
+
+module qpsk_mapper(
+    input logic [1:0] bits_in,
     output logic signed [15:0] i_out,
     output logic signed [15:0] q_out
-);
+    );
     always_comb begin
         
-        case{bits_in}
+        case(bits_in)
             2'b00 : begin
                 i_out = 16'sd1024;
                 q_out = 16'sd1024;
@@ -22,7 +43,7 @@ module qpsk_mapper (
                 q_out = -16'sd1024;
             end
 
-            2'b01 : begin
+            2'b10 : begin
                 i_out = 16'sd1024;
                 q_out = -16'sd1024;
             end
@@ -37,3 +58,4 @@ module qpsk_mapper (
     end
 
 endmodule
+    
