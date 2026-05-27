@@ -64,11 +64,11 @@ X_hat =  frequency_domian_signals / (H + 1e-12)
 
 
 # remove padded symbols
-frequency_domian_signals = frequency_domian_signals[:original_len_symbol]
-frequency_domian_signals = frequency_domian_signals.flatten()
+X_hat = X_hat[:original_len_symbol]
+X_hat = X_hat.flatten()
 
 
 
 
 
-print(demapper(frequency_domian_signals,original_length,original_len_symbol))
+print(demapper(X_hat,original_length,original_len_symbol))
