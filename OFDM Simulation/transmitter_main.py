@@ -5,17 +5,15 @@ from QPSK_Mapper import qpsk_mapper
 from Symbol_Mapper import symbol_mapper
 
 N = 64
-BANDWIDTH = 20_000_000
+BANDWIDTH = 500_000
 CARRIER_SPACING = BANDWIDTH/N
 T = 1/CARRIER_SPACING
 SAMPLE_RATE = N * CARRIER_SPACING
 T_GI = 0.8e-6 # which should be equal to the time of the multipath channel
 CP_LEN = int(np.ceil(T_GI * BANDWIDTH))
 
-import numpy as np
 
-N = 64
-NUM_OFDM_SYMBOLS = 64
+NUM_OFDM_SYMBOLS = 16
 BITS_PER_QPSK = 2
 
 num_bits = N * NUM_OFDM_SYMBOLS * BITS_PER_QPSK
@@ -54,6 +52,14 @@ time_domain_signals = np.concatenate((gi,time_domain_signals),axis = 1)
 
 signal = time_domain_signals.flatten()
 
+max_amplitude = np.max(np.abs(signal))
+signal_ad2 = signal / max_amplitude * 0.8
+
+i_wave = signal_ad2.real
+q_wave = signal_ad2.imag
+
+np.savetxt("OFDM Simulation/ad2_i_waveform.csv", i_wave, delimiter=",")
+np.savetxt("OFDM Simulation/ad2_q_waveform.csv", q_wave, delimiter=",")
 
 with open("OFDM Simulation/transmitted_bits.txt", "w") as f:
     f.write("sample_index,time_seconds,real,imag\n")
@@ -64,3 +70,5 @@ with open("OFDM Simulation/transmitted_bits.txt", "w") as f:
     
     f.write("orignal_length,original_len_symbol,N,BANDWIDTH,CP_LEN,TS\n")
     f.write(f"{original_len},{original_len_symbol},{N},{BANDWIDTH},{CP_LEN},{TS}\n")
+
+
