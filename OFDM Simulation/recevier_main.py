@@ -6,7 +6,7 @@ from radar_target_channel import radar_target_channel
 from transmitter_main import N_symbols
 
 
-targets = [{"range" : 100, "velocity" : 0, "rcs" : 1},
+targets = [{"range" : 100, "velocity" : 5, "rcs" : 1},
 ]
 
 filename = "OFDM Simulation/transmitted_bits.txt"
@@ -56,8 +56,7 @@ for line in data_lines:
 
 complex_samples = np.array(complex_samples)
 
-rx_signal = complex_samples.copy()
- #radar_target_channel(complex_samples, 1/TS, CARRIER_FREQ, targets,None)
+rx_signal = radar_target_channel(complex_samples, 1/TS, CARRIER_FREQ, targets,None)
 
 BLOCK_LEN = N + CP_LEN
 num_blocks = len(rx_signal) // BLOCK_LEN
