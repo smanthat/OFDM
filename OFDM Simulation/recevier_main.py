@@ -1,13 +1,13 @@
 import numpy as np
+import pandas as pd
 from Demapper import demapper
 from Multipath_channel import multipath_channel
 import matplotlib.pyplot as plt
 from radar_target_channel import radar_target_channel
-#from transmitter_main import N_symbols
+from transmitter_main import N_symbols
 
 
-targets = [{"range" : 100, "velocity" : 5, "rcs" : 1},
-]
+targets = [{"range" : 10000, "velocity" : 0, "rcs" : 1}]
 
 filename = "OFDM Simulation/transmitted_bits.txt"
 
@@ -56,7 +56,7 @@ for line in data_lines:
 
 complex_samples = np.array(complex_samples)
 
-rx_signal = complex_samples.copy() #radar_target_channel(complex_samples, 1/TS, CARRIER_FREQ, targets,None)
+rx_signal =  radar_target_channel(complex_samples, 1/TS, CARRIER_FREQ, targets,None)
 
 BLOCK_LEN = N + CP_LEN
 num_blocks = len(rx_signal) // BLOCK_LEN
@@ -73,24 +73,24 @@ rx_signal = rx_signal[:,CP_LEN:]
 
 frequency_domian_signals = np.fft.fft(rx_signal,axis = 1)
 
-# X = N_symbols[:frequency_domian_signals.shape[0], :]
+X = N_symbols[:frequency_domian_signals.shape[0], :]
 
-# H_est = frequency_domian_signals / (X + 1e-12)
+H_est = frequency_domian_signals / (X + 1e-12)
 
-# range_profile = np.fft.ifft(H_est, axis=1)
+range_profile = np.fft.ifft(H_est, axis=1)
 
-# range_doppler = np.fft.fftshift(
-#     np.fft.fft(range_profile, axis=0), axes=0
-# )
-# rd_map_db = 20 * np.log10(np.abs(range_doppler) + 1e-12)
+range_doppler = np.fft.fftshift(
+np.fft.fft(range_profile, axis=0), axes=0
+)
+rd_map_db = 20 * np.log10(np.abs(range_doppler) + 1e-12)
 
-# plt.figure()
-# plt.imshow(rd_map_db, aspect="auto", origin="lower")
-# plt.title("OFDM Radar Range-Doppler Map")
-# plt.xlabel("Range Bin")
-# plt.ylabel("Doppler Bin")
-# plt.colorbar(label="Magnitude (dB)")
-# plt.show()
+plt.figure()
+plt.imshow(rd_map_db, aspect="auto", origin="lower")
+plt.title("OFDM Radar Range-Doppler Map")
+plt.xlabel("Range Bin")
+plt.ylabel("Doppler Bin")
+plt.colorbar(label="Magnitude (dB)")
+plt.show()
 
 X_hat = frequency_domian_signals.flatten()
 X_hat = X_hat[:original_len_symbol]

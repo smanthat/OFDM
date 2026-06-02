@@ -16,12 +16,6 @@ CP_LEN = int(np.ceil(T_GI * BANDWIDTH))
 NUM_OFDM_SYMBOLS = 16
 BITS_PER_QPSK = 2
 
-num_bits = N * NUM_OFDM_SYMBOLS * BITS_PER_QPSK
-bits = np.random.randint(0, 2, num_bits)
-
-with open("OFDM Simulation/bits.txt", "w") as f:
-    f.write("".join(str(b) for b in bits))
-
 
 with open("OFDM Simulation/bits.txt", "r") as f:
     bit_string = f.read().strip()
@@ -41,8 +35,26 @@ plt.grid(True)
 
 plt.show()
 
+# -----------------------------
+# CREATE PREAMBLE
+# -----------------------------
 
-time_domain_signals = np.fft.ifft(N_symbols, axis=1)
+# Known frequency-domain preamble across 64 subcarriers
+# Use a fixed QPSK-like pattern
+preamble_freq = np.ones(N, dtype=complex)
+
+# Alternate signs to make it easier to detect
+preamble_freq[::2] = 1 + 1j
+preamble_freq[1::2] = -1 - 1j
+
+# Make it shape (1, N), so it acts like one OFDM symbol
+preamble_freq = preamble_freq.reshape(1, N)
+
+# Add preamble before data OFDM symbols
+tx_symbols_with_preamble = np.vstack((preamble_freq, N_symbols))
+
+
+time_domain_signals = np.fft.ifft(tx_symbols_with_preamble, axis=1)
 TS = 1 / SAMPLE_RATE
 
 #add cyclic prefix
@@ -57,6 +69,7 @@ signal_ad2 = signal / max_amplitude * 0.8
 
 i_wave = signal_ad2.real
 q_wave = signal_ad2.imag
+
 
 np.savetxt("OFDM Simulation/ad2_i_waveform.csv", i_wave, delimiter=",")
 np.savetxt("OFDM Simulation/ad2_q_waveform.csv", q_wave, delimiter=",")
