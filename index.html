@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sourish Manthati — OFDM Radar System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0e14;
+    --bg-2:#0d131c;
+    --panel:#111924;
+    --line:#1c2836;
+    --ink:#e6edf3;
+    --muted:#8497a8;
+    --dim:#5d6f80;
+    --accent:#22d3ee;
+    --accent-2:#38bdf8;
+    --accent-dim:rgba(34,211,238,.12);
+    --warn:#f0b429;
+    --mono:'Space Mono',ui-monospace,monospace;
+    --sans:'Sora',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-weight:300;
+    line-height:1.65;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--accent);color:#04181c}
+
+  /* signal canvas background */
+  #sig{position:fixed;inset:0;width:100%;height:100%;z-index:0;opacity:.5}
+  .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  .wrap{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:0 28px}
+
+  /* nav */
+  nav{position:fixed;top:0;left:0;right:0;z-index:50;
+    backdrop-filter:blur(12px);background:rgba(10,14,20,.72);
+    border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+  .logo{font-family:var(--mono);font-size:14px;letter-spacing:.5px;color:var(--ink);text-decoration:none}
+  .logo b{color:var(--accent)}
+  .navlinks{display:flex;gap:30px}
+  .navlinks a{font-family:var(--mono);font-size:12px;letter-spacing:1px;text-transform:uppercase;
+    color:var(--muted);text-decoration:none;transition:color .2s}
+  .navlinks a:hover{color:var(--accent)}
+  @media(max-width:680px){.navlinks{display:none}}
+
+  /* hero */
+  header{min-height:100vh;display:flex;align-items:center;padding:120px 0 70px;position:relative}
+  .tag{font-family:var(--mono);font-size:12px;letter-spacing:3px;text-transform:uppercase;
+    color:var(--accent);margin-bottom:26px;opacity:0;animation:rise .8s .1s forwards}
+  .tag::before{content:"";display:inline-block;width:34px;height:1px;background:var(--accent);
+    vertical-align:middle;margin-right:14px}
+  h1{font-size:clamp(42px,8vw,86px);font-weight:800;line-height:.98;letter-spacing:-.03em;
+    opacity:0;animation:rise .8s .2s forwards}
+  h1 .l2{display:block;color:transparent;-webkit-text-stroke:1.2px var(--accent);}
+  .lede{margin-top:30px;max-width:620px;font-size:clamp(16px,2.2vw,20px);color:var(--muted);font-weight:300;
+    opacity:0;animation:rise .8s .35s forwards}
+  .lede b{color:var(--ink);font-weight:600}
+  .cta{margin-top:42px;display:flex;gap:16px;flex-wrap:wrap;opacity:0;animation:rise .8s .5s forwards}
+  .btn{font-family:var(--mono);font-size:13px;letter-spacing:1px;text-decoration:none;
+    padding:13px 24px;border:1px solid var(--line);color:var(--ink);
+    transition:.25s;display:inline-flex;align-items:center;gap:9px}
+  .btn:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+  .btn.solid{background:var(--accent);color:#04181c;border-color:var(--accent);font-weight:700}
+  .btn.solid:hover{background:var(--accent-2);border-color:var(--accent-2);color:#04181c}
+  .hero-meta{margin-top:54px;padding-top:26px;border-top:1px solid var(--line);
+    display:flex;gap:40px;flex-wrap:wrap;
+    font-family:var(--mono);font-size:11px;letter-spacing:1px;color:var(--dim);
+    opacity:0;animation:rise .8s .7s forwards}
+  .hero-meta span b{color:var(--muted);font-weight:400}
+
+  @keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+  /* sections */
+  section{padding:96px 0;border-top:1px solid var(--line);position:relative}
+  .shead{display:flex;align-items:baseline;gap:16px;margin-bottom:46px}
+  .snum{font-family:var(--mono);font-size:13px;color:var(--accent)}
+  .stitle{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.02em}
+  .sub{color:var(--muted);max-width:680px;font-size:17px}
+
+  /* about grid */
+  .about{display:grid;grid-template-columns:1.4fr 1fr;gap:48px;align-items:start}
+  @media(max-width:760px){.about{grid-template-columns:1fr;gap:32px}}
+  .about p{color:var(--muted);font-size:17px;margin-bottom:18px}
+  .about p b{color:var(--ink);font-weight:600}
+  .facts{border:1px solid var(--line);background:var(--panel)}
+  .facts div{display:flex;justify-content:space-between;gap:14px;padding:15px 20px;
+    border-bottom:1px solid var(--line);font-family:var(--mono);font-size:13px}
+  .facts div:last-child{border-bottom:none}
+  .facts .k{color:var(--dim)}
+  .facts .v{color:var(--ink);text-align:right}
+
+  /* signal chain */
+  .chain{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:40px}
+  .node{font-family:var(--mono);font-size:12.5px;padding:10px 15px;border:1px solid var(--line);
+    background:var(--panel);color:var(--muted);position:relative;transition:.2s}
+  .node:hover{border-color:var(--accent);color:var(--accent)}
+  .node.acc{border-color:var(--accent-dim);color:var(--accent);background:var(--accent-dim)}
+  .arrow{align-self:center;color:var(--dim);font-family:var(--mono)}
+  .modes{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:8px}
+  @media(max-width:680px){.modes{grid-template-columns:1fr}}
+  .mode{border:1px solid var(--line);background:var(--panel);padding:26px}
+  .mode h4{font-family:var(--mono);font-size:13px;letter-spacing:1px;text-transform:uppercase;
+    color:var(--accent);margin-bottom:14px}
+  .mode p{color:var(--muted);font-size:15px}
+  .mode .q{margin-top:14px;font-family:var(--mono);font-size:12.5px;color:var(--dim);
+    border-left:2px solid var(--line);padding-left:12px}
+
+  /* spec grid */
+  .specs{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(max-width:680px){.specs{grid-template-columns:repeat(2,1fr)}}
+  .spec{background:var(--bg-2);padding:28px 24px;transition:.25s}
+  .spec:hover{background:var(--panel)}
+  .spec .num{font-family:var(--mono);font-size:clamp(24px,4vw,34px);font-weight:700;color:var(--accent);letter-spacing:-.02em}
+  .spec .lbl{margin-top:8px;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+
+  /* skills */
+  .skills{display:grid;grid-template-columns:repeat(2,1fr);gap:26px}
+  @media(max-width:680px){.skills{grid-template-columns:1fr}}
+  .skillcard{border:1px solid var(--line);background:var(--panel);padding:24px}
+  .skillcard h4{font-family:var(--mono);font-size:12px;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--accent);margin-bottom:16px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-family:var(--mono);font-size:12px;padding:6px 12px;border:1px solid var(--line);
+    color:var(--muted);transition:.2s}
+  .chip:hover{border-color:var(--accent);color:var(--ink)}
+
+  /* roadmap */
+  .road{position:relative;padding-left:26px}
+  .road::before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:1px;background:var(--line)}
+  .ritem{position:relative;padding:0 0 26px 22px}
+  .ritem::before{content:"";position:absolute;left:-26px;top:6px;width:11px;height:11px;border-radius:50%;
+    background:var(--bg);border:2px solid var(--dim)}
+  .ritem.done::before{background:var(--accent);border-color:var(--accent);box-shadow:0 0 12px var(--accent)}
+  .ritem.prog::before{border-color:var(--warn);background:var(--bg)}
+  .ritem h4{font-size:16px;font-weight:600;margin-bottom:4px}
+  .ritem .st{font-family:var(--mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--dim)}
+  .ritem.done .st{color:var(--accent)}
+  .ritem.prog .st{color:var(--warn)}
+  .ritem p{color:var(--muted);font-size:14.5px;margin-top:5px}
+
+  /* contact */
+  .contact{text-align:center;padding:110px 0}
+  .contact h2{font-size:clamp(30px,6vw,56px);font-weight:800;letter-spacing:-.02em;margin-bottom:22px}
+  .contact h2 span{color:transparent;-webkit-text-stroke:1.2px var(--accent)}
+  .contact .links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+  footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;
+    font-family:var(--mono);font-size:12px;color:var(--dim)}
+
+  .reveal{opacity:0;transform:translateY(28px);transition:.7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+<canvas id="sig"></canvas>
+<div class="grain"></div>
+
+<nav><div class="wrap">
+  <a href="#top" class="logo">SM<b>//</b>OFDM_RADAR</a>
+  <div class="navlinks">
+    <a href="#about">About</a>
+    <a href="#project">Project</a>
+    <a href="#specs">Specs</a>
+    <a href="#hardware">Hardware</a>
+    <a href="#stack">Stack</a>
+    <a href="#roadmap">Roadmap</a>
+    <a href="#contact">Contact</a>
+  </div>
+</div></nav>
+
+<header id="top"><div class="wrap">
+  <div class="tag">Electrical Engineering · RF / DSP / FPGA / Radar</div>
+  <h1>Sourish Manthati<span class="l2">OFDM Radar System</span></h1>
+  <p class="lede">A <b>64-subcarrier QPSK OFDM</b> transmitter/receiver built from the ground up in Python as a golden reference model — with multipath channel modeling, BER verification, and radar-style <b>range-Doppler processing</b> — and <b>validated on real hardware</b> through an Analog Discovery 2 baseband loopback.</p>
+  <div class="cta">
+    <a class="btn solid" href="https://github.com/smanthat/OFDM" target="_blank" rel="noopener">View on GitHub ↗</a>
+    <a class="btn" href="#project">Explore the system ↓</a>
+  </div>
+  <div class="hero-meta">
+    <span><b>UNIVERSITY</b> · Purdue ECE</span>
+    <span><b>FOCUS</b> · Electromagnetics</span>
+    <span><b>STATUS</b> · Active development</span>
+  </div>
+</div></header>
+
+<section id="about"><div class="wrap">
+  <div class="shead reveal"><span class="snum">01</span><h2 class="stitle">About</h2></div>
+  <div class="about">
+    <div class="reveal">
+      <p>I'm an Electrical Engineering student at <b>Purdue University</b> with a concentration in Electromagnetics, focused on radar systems, RF and digital signal processing, FPGA/RTL development, and hardware testing.</p>
+      <p>My core project is an end-to-end OFDM communication and radar signal-processing chain. I build the <b>Python floating-point model first</b> to define correct behavior, then move each block toward fixed-point and SystemVerilog so the hardware can be verified against a trusted reference.</p>
+      <p>I'm comfortable across the full signal chain — from QPSK mapping and IFFT/FFT processing to cyclic-prefix design, channel modeling, and bench measurement with oscilloscopes and DAQ-style workflows.</p>
+    </div>
+    <div class="facts reveal">
+      <div><span class="k">Degree</span><span class="v">B.S. Electrical Eng.</span></div>
+      <div><span class="k">Concentration</span><span class="v">Electromagnetics</span></div>
+      <div><span class="k">Domains</span><span class="v">Radar · DSP · FPGA</span></div>
+      <div><span class="k">Languages</span><span class="v">Python · SystemVerilog</span></div>
+      <div><span class="k">Tools</span><span class="v">Vivado · MATLAB</span></div>
+      <div><span class="k">Location</span><span class="v">Austin, TX</span></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="project"><div class="wrap">
+  <div class="shead reveal"><span class="snum">02</span><h2 class="stitle">The System</h2></div>
+  <p class="sub reveal" style="margin-bottom:38px">A full OFDM pipeline that runs in two logical modes from the same waveform — communication mode for bit recovery, and radar mode for target range and velocity estimation.</p>
+
+  <div class="chain reveal">
+    <span class="node acc">Bits</span><span class="arrow">→</span>
+    <span class="node">QPSK Map</span><span class="arrow">→</span>
+    <span class="node">64-SC Map</span><span class="arrow">→</span>
+    <span class="node">IFFT</span><span class="arrow">→</span>
+    <span class="node">Cyclic Prefix</span><span class="arrow">→</span>
+    <span class="node">Channel</span><span class="arrow">→</span>
+    <span class="node">FFT</span><span class="arrow">→</span>
+    <span class="node">Equalize</span><span class="arrow">→</span>
+    <span class="node">Demap</span><span class="arrow">→</span>
+    <span class="node acc">BER</span>
+  </div>
+
+  <div class="modes">
+    <div class="mode reveal">
+      <h4>// Communication Mode</h4>
+      <p>Recovers transmitted bits and measures link quality. Cyclic prefix removal, FFT, QPSK demapping, then a bit-by-bit comparison against the original stream.</p>
+      <div class="q">Did the receiver recover the transmitted bits correctly?</div>
+    </div>
+    <div class="mode reveal">
+      <h4>// Radar Mode</h4>
+      <p>Uses known OFDM symbols to estimate the channel response, builds a range profile via IFFT, then applies a Doppler FFT across symbols to form a range-Doppler map.</p>
+      <div class="q">Where is the target, and how fast is it moving?</div>
+    </div>
+  </div>
+</div></section>
+
+<section id="specs"><div class="wrap">
+  <div class="shead reveal"><span class="snum">03</span><h2 class="stitle">Technical Highlights</h2></div>
+  <div class="specs reveal">
+    <div class="spec"><div class="num">64</div><div class="lbl">Subcarriers</div></div>
+    <div class="spec"><div class="num">20<small style="font-size:.5em"> MHz</small></div><div class="lbl">Bandwidth</div></div>
+    <div class="spec"><div class="num">312.5<small style="font-size:.5em"> kHz</small></div><div class="lbl">Subcarrier Spacing</div></div>
+    <div class="spec"><div class="num">QPSK</div><div class="lbl">Gray-Coded Mapping</div></div>
+    <div class="spec"><div class="num">16</div><div class="lbl">Cyclic Prefix (samples)</div></div>
+    <div class="spec"><div class="num">0.0</div><div class="lbl">BER · Clean Loopback</div></div>
+  </div>
+</div></section>
+
+<section id="hardware"><div class="wrap">
+  <div class="shead reveal"><span class="snum">04</span><h2 class="stitle">Hardware Validation</h2></div>
+  <p class="sub reveal" style="margin-bottom:38px">The signal chain didn't just pass in simulation — it was validated on real test equipment through an analog baseband loopback on an Analog Discovery 2.</p>
+  <div class="modes reveal">
+    <div class="mode">
+      <h4>// Loopback Setup</h4>
+      <p>Exported the OFDM waveform's I and Q samples and drove them out the AD2's two waveform-generator channels, then captured the returning analog signals on the AD2 oscilloscope channels.</p>
+    </div>
+    <div class="mode">
+      <h4>// Recovery Pipeline</h4>
+      <p>Reconstructed the complex baseband signal and built a Python recovery chain — DC-offset removal, packet-length estimation by autocorrelation, resampling to the reference length, and I/Q-ambiguity resolution — feeding into the OFDM receiver.</p>
+    </div>
+  </div>
+  <div class="specs reveal" style="margin-top:24px">
+    <div class="spec"><div class="num">I / Q</div><div class="lbl">Dual-Channel Baseband</div></div>
+    <div class="spec"><div class="num">0.0</div><div class="lbl">Measured BER</div></div>
+    <div class="spec"><div class="num">AD2</div><div class="lbl">Real Test Equipment</div></div>
+  </div>
+</div></section>
+
+<section id="stack"><div class="wrap">
+  <div class="shead reveal"><span class="snum">05</span><h2 class="stitle">Stack &amp; Skills</h2></div>
+  <div class="skills">
+    <div class="skillcard reveal"><h4>Signal Processing</h4><div class="chips">
+      <span class="chip">OFDM</span><span class="chip">QPSK</span><span class="chip">FFT / IFFT</span>
+      <span class="chip">Cyclic Prefix</span><span class="chip">Channel Estimation</span><span class="chip">Range-Doppler</span>
+      <span class="chip">Multipath Modeling</span><span class="chip">BER Analysis</span></div></div>
+    <div class="skillcard reveal"><h4>Programming</h4><div class="chips">
+      <span class="chip">Python</span><span class="chip">NumPy</span><span class="chip">Matplotlib</span><span class="chip">SciPy</span>
+      <span class="chip">MATLAB</span><span class="chip">SystemVerilog</span><span class="chip">C / C++</span></div></div>
+    <div class="skillcard reveal"><h4>Hardware &amp; FPGA</h4><div class="chips">
+      <span class="chip">Vivado</span><span class="chip">RTL Design</span><span class="chip">Testbenches</span>
+      <span class="chip">Waveform Debug</span><span class="chip">Fixed-Point</span><span class="chip">Synthesis</span></div></div>
+    <div class="skillcard reveal"><h4>Test &amp; Measurement</h4><div class="chips">
+      <span class="chip">Oscilloscopes</span><span class="chip">DAQ Workflows</span><span class="chip">Board Bring-up</span>
+      <span class="chip">Analog Discovery 2</span><span class="chip">ADC / DAC Signal Chains</span></div></div>
+  </div>
+</div></section>
+
+<section id="roadmap"><div class="wrap">
+  <div class="shead reveal"><span class="snum">06</span><h2 class="stitle">Roadmap</h2></div>
+  <div class="road">
+    <div class="ritem done reveal"><div class="st">Complete</div><h4>Python OFDM TX/RX chain</h4><p>Full transmitter and receiver with clean BER=0 digital loopback.</p></div>
+    <div class="ritem done reveal"><div class="st">Complete</div><h4>Channel &amp; radar modeling</h4><p>Multipath channel, radar target returns with delay, Doppler, and reflection amplitude.</p></div>
+    <div class="ritem done reveal"><div class="st">Complete</div><h4>Range-Doppler processing</h4><p>Channel estimation → range IFFT → Doppler FFT → range-Doppler map.</p></div>
+    <div class="ritem done reveal"><div class="st">Complete</div><h4>Analog Discovery 2 baseband loopback</h4><p>Drove I/Q out the AD2 and recovered the transmitted bits from the captured analog signals with zero bit errors.</p></div>
+    <div class="ritem prog reveal"><div class="st">In Progress</div><h4>SystemVerilog hardware implementation</h4><p>Started with a verified, self-checking QPSK mapper module (fixed-point, Gray-coded) tested in Vivado; remaining OFDM blocks in progress.</p></div>
+    <div class="ritem prog reveal"><div class="st">In Progress</div><h4>Fixed-point conversion</h4><p>Converting the floating-point model to a hardware-friendly fixed-point representation.</p></div>
+    <div class="ritem reveal"><div class="st">Planned</div><h4>DAC/ADC signal-chain validation</h4><p>Extending hardware testing toward a full DAC/ADC front-end signal chain.</p></div>
+  </div>
+</div></section>
+
+<section id="contact"><div class="wrap contact">
+  <div class="reveal">
+    <h2>Let's talk <span>signals.</span></h2>
+    <p class="sub" style="margin:0 auto">Open to internships in radar, DSP, RF, and FPGA. Reach out or take a look at the source.</p>
+    <div class="links">
+      <a class="btn solid" href="https://github.com/smanthat/OFDM" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="btn" href="mailto:Sourish.man@gmail.com">Email</a>
+      <a class="btn" href="#" data-li="LinkedIn">LinkedIn ↗</a>
+    </div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">SOURISH MANTHATI · OFDM RADAR SYSTEM · BUILT 2026</div></footer>
+
+<script>
+// reveal on scroll
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// OFDM-ish multi-sine signal background
+const c=document.getElementById('sig'),x=c.getContext('2d');
+let w,h,t=0;
+function size(){w=c.width=innerWidth*devicePixelRatio;h=c.height=innerHeight*devicePixelRatio;x.scale(1,1)}
+size();addEventListener('resize',size);
+const carriers=[];
+for(let i=0;i<7;i++)carriers.push({f:0.5+i*0.55,a:8+Math.random()*22,p:Math.random()*6.28,sp:0.004+Math.random()*0.008});
+function draw(){
+  x.clearRect(0,0,w,h);
+  const mid=h*0.5, step=2*devicePixelRatio;
+  carriers.forEach((c0,idx)=>{
+    x.beginPath();
+    const alpha=0.05+idx*0.012;
+    x.strokeStyle=`rgba(34,211,238,${alpha})`;
+    x.lineWidth=1*devicePixelRatio;
+    for(let px=0;px<=w;px+=step){
+      const u=px/w*Math.PI*2*c0.f;
+      const y=mid+Math.sin(u+c0.p+t*c0.sp*60)*c0.a*devicePixelRatio
+             + Math.sin(u*2.3+t*c0.sp*40)*c0.a*0.4*devicePixelRatio;
+      px===0?x.moveTo(px,y):x.lineTo(px,y);
+    }
+    x.stroke();
+  });
+  t+=1;requestAnimationFrame(draw);
+}
+draw();
+
+// LinkedIn placeholder prompt
+document.querySelector('[data-li]').addEventListener('click',function(e){
+  e.preventDefault();
+  alert('Replace this link with your LinkedIn profile URL in the HTML (search for data-li).');
+});
+</script>
+</body>
+</html>
