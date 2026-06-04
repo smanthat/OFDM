@@ -35,10 +35,6 @@ plt.grid(True)
 
 plt.show()
 
-# -----------------------------
-# CREATE PREAMBLE
-# -----------------------------
-
 # Known frequency-domain preamble across 64 subcarriers
 # Use a fixed QPSK-like pattern
 preamble_freq = np.ones(N, dtype=complex)
