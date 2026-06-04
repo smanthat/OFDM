@@ -3,10 +3,9 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from Demapper import demapper
-from radar_target_channel import radar_target_channel
+
 from transmitter_main import N_symbols  # data symbols only (16, 64)
 
-targets = [{"range": 10000, "velocity": 0, "rcs": 1}]
 filename = "OFDM Simulation/transmitted_bits.txt"
 CARRIER_FREQ = 24e9
 
@@ -51,23 +50,6 @@ preamble_freq[1::2] = -1 - 1j
 H_est = freq[0] / preamble_freq                         # per-subcarrier channel
 data_freq = freq[1:]                                    # drop preamble -> (16, 64)
 data_eq = data_freq / (H_est[np.newaxis, :] + 1e-12)    # zero-forcing equalize
-
-# ---------------- RADAR range-Doppler (uses the delayed target channel) ----------------
-rx_radar = radar_target_channel(complex_samples, 1 / TS, CARRIER_FREQ, targets, None)
-nb_r = len(rx_radar) // BLOCK_LEN
-rx_radar = rx_radar[:nb_r * BLOCK_LEN].reshape(-1, BLOCK_LEN)[:, CP_LEN:]
-radar_freq = np.fft.fft(rx_radar, axis=1)[1:]            # drop preamble
-X = N_symbols[:radar_freq.shape[0], :]
-H_radar = radar_freq / (X + 1e-12)
-range_profile = np.fft.ifft(H_radar, axis=1)
-range_doppler = np.fft.fftshift(np.fft.fft(range_profile, axis=0), axes=0)
-rd_map_db = 20 * np.log10(np.abs(range_doppler) + 1e-12)
-plt.figure()
-plt.imshow(rd_map_db, aspect="auto", origin="lower")
-plt.title("OFDM Radar Range-Doppler Map")
-plt.xlabel("Range Bin"); plt.ylabel("Doppler Bin")
-plt.colorbar(label="Magnitude (dB)")
-plt.savefig("OFDM Simulation/range_doppler_fixed.png", dpi=120)
 
 # ---------------- COMMS demap ----------------
 X_hat = data_eq.flatten()[:original_len_symbol]
