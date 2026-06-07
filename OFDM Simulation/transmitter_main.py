@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 from QPSK_Mapper import qpsk_mapper
 from Symbol_Mapper import symbol_mapper
+from fixed_point_reference import dec_to_fixed_point
 
 N = 64
 BANDWIDTH = 500_000
@@ -15,6 +16,9 @@ CP_LEN = int(np.ceil(T_GI * BANDWIDTH))
 
 NUM_OFDM_SYMBOLS = 16
 BITS_PER_QPSK = 2
+
+W = 16
+F = 10
 
 
 with open("OFDM Simulation/bits.txt", "r") as f:
@@ -66,9 +70,12 @@ signal_ad2 = signal / max_amplitude * 0.8
 i_wave = signal_ad2.real
 q_wave = signal_ad2.imag
 
+i_wave_fixed = dec_to_fixed_point(i_wave, F, W)
+q_wave_fixed = dec_to_fixed_point(q_wave, F, W)
 
-np.savetxt("OFDM Simulation/ad2_i_waveform.csv", i_wave, delimiter=",")
-np.savetxt("OFDM Simulation/ad2_q_waveform.csv", q_wave, delimiter=",")
+
+np.savetxt("OFDM Simulation/ad2_i_waveform.csv", i_wave_fixed, delimiter=",")
+np.savetxt("OFDM Simulation/ad2_q_waveform.csv", q_wave_fixed, delimiter=",")
 
 with open("OFDM Simulation/transmitted_bits.txt", "w") as f:
     f.write("sample_index,time_seconds,real,imag\n")
