@@ -3,6 +3,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from Demapper import demapper
+import pandas as pd
 
 from transmitter_main import N_symbols  # data symbols only (16, 64)
 
@@ -21,30 +22,54 @@ BANDWIDTH           = int(metadata[3])
 CP_LEN              = int(metadata[4])
 TS                  = float(metadata[5])
 
-complex_samples = []
-for line in lines[1:-2]:
-    line = line.strip()
-    if not line:
-        continue
-    _, _, real, imag = line.split(",")
-    complex_samples.append(float(real) + 1j * float(imag))
-complex_samples = np.array(complex_samples)
+rx_signal = pd.read_csv("OFDM Simulation Radar/Recieved_waveform.csv",comment="#",)                       
+
+i_signals = pd.to_numeric(rx_signal["Channel 1 (V)"], errors="coerce").to_numpy(dtype=float)
+q_signals = pd.to_numeric(rx_signal["Channel 2 (V)"], errors="coerce").to_numpy(dtype=float)
+mask = ~(np.isnan(i_signals) | np.isnan(q_signals))
+i_signals, q_signals = i_signals[mask], q_signals[mask]
+complex_samples = i_signals + 1j * q_signals
+complex_samples = np.array(complex_samples, dtype=complex)
+
+
 
 # ---- COMMS path: demodulate the clean transmitted stream ----
 # The radar_target_channel applies range delay + heavy attenuation, which
 # misaligns OFDM frame timing and corrupts the comms data. Communications
 # demodulation must use the undelayed signal; the radar channel below is
 # only used to build the range-Doppler map.
-BLOCK_LEN = N + CP_LEN
-num_blocks = len(complex_samples) // BLOCK_LEN
-comms = complex_samples[:num_blocks * BLOCK_LEN].reshape(-1, BLOCK_LEN)
-comms = comms[:, CP_LEN:]                                # remove cyclic prefix
-freq = np.fft.fft(comms, axis=1)                         # (17, 64): preamble + data
+                     # (17, 64): preamble + data
 
-# ---- rebuild the SAME known preamble the transmitter used ----
-preamble_freq = np.ones(N, dtype=complex)
-preamble_freq[::2]  = 1 + 1j
-preamble_freq[1::2] = -1 - 1j
+
+preamble_freq = np.zeros(N, dtype=complex)
+preamble_freq[::2] = 1 + 1j
+
+r = complex_samples
+
+# -- True Schdl - Cox channel estimate from the known preamble ---
+# find the timing metric by correlating with the known preamble
+num = len(r)-N
+metric = []
+L = N//2
+for d in range(num):
+    p = 0
+    r_c = 0
+    for m in range(L):
+        p += np.conj(r[d+m]) * r[d+m+L]
+        r_c += np.abs(r[d+m+L])**2
+    metric.append(np.abs(p)**2 / (r_c**2 + 1e-12))
+d_peak = np.argmax(metric)
+
+NUM_BLOCKS = 17
+BLOCK_LEN = N + CP_LEN
+frame_start = d_peak
+if frame_start < 0:
+    print("Warning: Detected frame start is before the beginning of the received signal. Adjusting to 0.")
+    frame_start = 0
+comms_samples = complex_samples[frame_start:frame_start + BLOCK_LEN * NUM_BLOCKS]
+comms_without_CP = comms_samples.reshape(-1, BLOCK_LEN)[:, CP_LEN:]
+freq = np.fft.fft(comms_without_CP, axis=1)
+
 
 # ---- channel estimate from the preamble, then equalize the data ----
 H_est = freq[0] / preamble_freq                         # per-subcarrier channel
@@ -63,4 +88,4 @@ n = min(len(tx_bits), len(rx_bits))
 num_errors = int(np.sum(tx_bits[:n] != rx_bits[:n]))
 ber = num_errors / n
 print(f"Number of bit errors: {num_errors} out of {n}")
-print(f"Bit Error Rate (BER): {ber:.6f}")
+print(f"Bit Error Rate (BER): {ber:.20f}")
