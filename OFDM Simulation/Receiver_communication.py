@@ -4,6 +4,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from Demapper import demapper
 import pandas as pd
+from preamble_gen import timing_preamble_gen, channel_preamble_gen
 
 from transmitter_main import N_symbols  # data symbols only (16, 64)
 
@@ -21,8 +22,9 @@ N                   = int(metadata[2])
 BANDWIDTH           = int(metadata[3])
 CP_LEN              = int(metadata[4])
 TS                  = float(metadata[5])
+NUM_BLOCKS = int(metadata[6]) 
 
-rx_signal = pd.read_csv("OFDM Simulation Radar/Recieved_waveform.csv",comment="#",)                       
+rx_signal = pd.read_csv("OFDM Simulation/Recieved_waveform.csv",comment="#",)                       
 
 i_signals = pd.to_numeric(rx_signal["Channel 1 (V)"], errors="coerce").to_numpy(dtype=float)
 q_signals = pd.to_numeric(rx_signal["Channel 2 (V)"], errors="coerce").to_numpy(dtype=float)
@@ -41,8 +43,7 @@ complex_samples = np.array(complex_samples, dtype=complex)
                      # (17, 64): preamble + data
 
 
-preamble_freq = np.zeros(N, dtype=complex)
-preamble_freq[::2] = 1 + 1j
+
 
 r = complex_samples
 
@@ -50,6 +51,7 @@ r = complex_samples
 # find the timing metric by correlating with the known preamble
 num = len(r)-N
 metric = []
+energy = []
 L = N//2
 for d in range(num):
     p = 0
@@ -58,23 +60,41 @@ for d in range(num):
         p += np.conj(r[d+m]) * r[d+m+L]
         r_c += np.abs(r[d+m+L])**2
     metric.append(np.abs(p)**2 / (r_c**2 + 1e-12))
-d_peak = np.argmax(metric)
+    energy.append(r_c)
 
-NUM_BLOCKS = 17
+metric = np.array(metric)
+energy = np.array(energy)
+
+typical = np.median(energy[energy > 0])
+
+metric[energy < 0.2 * typical] = 0  # mask out low-energy peaks
+
+d_peak = int(np.argmax(metric))
+
 BLOCK_LEN = N + CP_LEN
 frame_start = d_peak
 if frame_start < 0:
     print("Warning: Detected frame start is before the beginning of the received signal. Adjusting to 0.")
     frame_start = 0
-comms_samples = complex_samples[frame_start:frame_start + BLOCK_LEN * NUM_BLOCKS]
+comms_samples = complex_samples[frame_start : frame_start + BLOCK_LEN * NUM_BLOCKS]
+assert len(comms_samples) == BLOCK_LEN * NUM_BLOCKS, \
+    f"short frame: got {len(comms_samples)}, need {BLOCK_LEN*NUM_BLOCKS} — d_peak too close to end of capture"
 comms_without_CP = comms_samples.reshape(-1, BLOCK_LEN)[:, CP_LEN:]
 freq = np.fft.fft(comms_without_CP, axis=1)
 
 
 # ---- channel estimate from the preamble, then equalize the data ----
-H_est = freq[0] / preamble_freq                         # per-subcarrier channel
-data_freq = freq[1:]                                    # drop preamble -> (16, 64)
+H_est = freq[1] / channel_preamble_gen(N)                         # per-subcarrier channel
+data_freq = freq[2:]                                    # drop preamble -> (16, 64)
 data_eq = data_freq / (H_est[np.newaxis, :] + 1e-12)    # zero-forcing equalize
+
+
+plt.scatter(data_eq.real, data_eq.imag)
+plt.title("Received OFDM Signal Constellation")
+plt.xlabel("In-phase")
+plt.ylabel("Quadrature")
+plt.grid(True)
+plt.savefig("OFDM Simulation/constellation.png")
 
 # ---------------- COMMS demap ----------------
 X_hat = data_eq.flatten()[:original_len_symbol]
