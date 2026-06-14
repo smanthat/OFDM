@@ -6,7 +6,9 @@ from Demapper import demapper
 import pandas as pd
 from preamble_gen import timing_preamble_gen, channel_preamble_gen
 
-from transmitter_main import N_symbols  # data symbols only (16, 64)
+from transmitter_main import N_symbols, signal  # data symbols only (16, 64)
+from compute_range_doppler import apply_target_effects, compute_range_doppler, add_noise, peak_to_floor_db
+from fixed_to_decimal import dec_to_fixed_point, fixed_point_to_dec
 
 filename = "OFDM Simulation/transmitted_bits.txt"
 CARRIER_FREQ = 24e9
@@ -24,25 +26,51 @@ CP_LEN              = int(metadata[4])
 TS                  = float(metadata[5])
 NUM_BLOCKS = int(metadata[6]) 
 
+F = 13 
+W = 16
+
+BLOCK_LEN = N + CP_LEN
+
 rx_signal = pd.read_csv("OFDM Simulation/Recieved_waveform.csv",comment="#",)                       
 
 i_signals = pd.to_numeric(rx_signal["Channel 1 (V)"], errors="coerce").to_numpy(dtype=float)
 q_signals = pd.to_numeric(rx_signal["Channel 2 (V)"], errors="coerce").to_numpy(dtype=float)
 mask = ~(np.isnan(i_signals) | np.isnan(q_signals))
 i_signals, q_signals = i_signals[mask], q_signals[mask]
+i_signals = fixed_point_to_dec(i_signals, F, W)
+q_signals = fixed_point_to_dec(q_signals, F, W)
 complex_samples = i_signals + 1j * q_signals
 complex_samples = np.array(complex_samples, dtype=complex)
 
 
 
-# ---- COMMS path: demodulate the clean transmitted stream ----
-# The radar_target_channel applies range delay + heavy attenuation, which
-# misaligns OFDM frame timing and corrupts the comms data. Communications
-# demodulation must use the undelayed signal; the radar channel below is
-# only used to build the range-Doppler map.
-                     # (17, 64): preamble + data
 
+# 1. Apply two synthetic targets — in the TIME DOMAIN
+rx = (apply_target_effects(signal, tau=10, fD=390.625, sample_rate=BANDWIDTH) +
+      apply_target_effects(signal, tau=20, fD=-3*390.625, sample_rate=BANDWIDTH))
 
+rx = add_noise(rx, snr_db=-5)  # add noise to the received signal
+# 2. Reshape to (18, 80), drop the two preamble blocks, strip the CP
+rx_blocks = rx.reshape(-1, BLOCK_LEN)[2:, CP_LEN:]    # (16, 64), time domain
+
+# 3. NOW FFT — convert each block to frequency domain
+Y = np.fft.fft(rx_blocks, axis=1).T                   # (64, 16): (subcarrier, symbol)
+
+# 4. X is the KNOWN transmitted freq-domain QPSK data symbols
+X = N_symbols.T                                        # (64, 16)
+
+# 5. Range-Doppler
+rd_map = compute_range_doppler(Y, X)                   # (64, 16): (range, Doppler)
+
+# 6. Plot — no .T needed now, since axis 0 is already range
+plt.imshow(np.abs(rd_map), aspect='auto', origin='lower')
+plt.xlabel('Doppler bin'); plt.ylabel('Range bin')
+plt.title('Range-Doppler map')
+plt.colorbar()
+plt.savefig('OFDM Simulation/rd_map.png')
+
+peak_floor_db = peak_to_floor_db(rd_map)
+print(f"Peak-to-floor ratio: {peak_floor_db:.2f} dB")
 
 
 r = complex_samples
@@ -71,7 +99,7 @@ metric[energy < 0.2 * typical] = 0  # mask out low-energy peaks
 
 d_peak = int(np.argmax(metric))
 
-BLOCK_LEN = N + CP_LEN
+
 frame_start = d_peak
 if frame_start < 0:
     print("Warning: Detected frame start is before the beginning of the received signal. Adjusting to 0.")
@@ -99,6 +127,7 @@ plt.savefig("OFDM Simulation/constellation.png")
 # ---------------- COMMS demap ----------------
 X_hat = data_eq.flatten()[:original_len_symbol]
 rx_bits = demapper(X_hat, original_length, original_len_symbol)
+
 
 with open("OFDM Simulation/bits.txt", "r") as f:
     tx_bits = np.array([int(b) for b in f.read().strip()])

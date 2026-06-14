@@ -5,10 +5,18 @@ def dec_to_fixed_point(x,F,W):
     lo = - (2 ** (W - 1))
     hi = (2 ** (W - 1)) - 1
     
-    for i in range(len(x)):
-        if x[i] > hi:
-            x[i] = hi
-        elif x[i] < lo:
-            x[i] = lo
+    x = np.clip(x, lo, hi)
     
     return x.astype(int)
+
+def fixed_point_to_dec(x_fixed, F, W):
+    # Convert fixed-point to decimal
+    x_dec = x_fixed / (2**F)
+    return x_dec
+
+def export_fixed_point(arr, filename, F, W):
+    re = dec_to_fixed_point(arr.real.flatten(), F, W)
+    im = dec_to_fixed_point(arr.imag.flatten(), F, W)
+    with open(filename, "w") as f:
+        for r, i in zip(re, im):
+            f.write(f"{int(r) & 0xFFFF:04x} {int(i) & 0xFFFF:04x}\n")
