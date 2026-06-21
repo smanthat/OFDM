@@ -1,6 +1,70 @@
 Time resolution is 1 ps
-Test passed for bits_in = 00: I =   1024, Q =   1024
-Test passed for bits_in = 01: I =  -1024, Q =   1024
-Test passed for bits_in = 11: I =  -1024, Q =  -1024
-Test passed for bits_in = 10: I =   1024, Q =  -1024
-$finish called at time : 40 ns : File "C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_qpsk_mapper.sv" Line 59
+WARNING: File C:/Sourish/OFDM/OFDM Simulation/Verification_Files/preamble_timing.hex referenced from process on C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sources_1/new/preamble_rom.sv at line 36 cannot be opened for reading. Please ensure that this file is available in the current working directory or parent directory of xsim.dir location specified via -xsimdir switch.
+WARNING: File C:/Sourish/OFDM/OFDM Simulation/Verification_Files/preamble_timing.hex referenced from process on C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_preamble_rom.sv at line 33 cannot be opened for reading. Please ensure that this file is available in the current working directory or parent directory of xsim.dir location specified via -xsimdir switch.
+PASS addr=0: xxxxxxxx
+PASS addr=1: xxxxxxxx
+PASS addr=2: xxxxxxxx
+PASS addr=3: xxxxxxxx
+PASS addr=4: xxxxxxxx
+PASS addr=5: xxxxxxxx
+PASS addr=6: xxxxxxxx
+PASS addr=7: xxxxxxxx
+PASS addr=8: xxxxxxxx
+PASS addr=9: xxxxxxxx
+PASS addr=10: xxxxxxxx
+PASS addr=11: xxxxxxxx
+PASS addr=12: xxxxxxxx
+PASS addr=13: xxxxxxxx
+PASS addr=14: xxxxxxxx
+PASS addr=15: xxxxxxxx
+PASS addr=16: xxxxxxxx
+PASS addr=17: xxxxxxxx
+PASS addr=18: xxxxxxxx
+PASS addr=19: xxxxxxxx
+PASS addr=20: xxxxxxxx
+PASS addr=21: xxxxxxxx
+PASS addr=22: xxxxxxxx
+PASS addr=23: xxxxxxxx
+PASS addr=24: xxxxxxxx
+PASS addr=25: xxxxxxxx
+PASS addr=26: xxxxxxxx
+PASS addr=27: xxxxxxxx
+PASS addr=28: xxxxxxxx
+PASS addr=29: xxxxxxxx
+PASS addr=30: xxxxxxxx
+PASS addr=31: xxxxxxxx
+PASS addr=32: xxxxxxxx
+PASS addr=33: xxxxxxxx
+PASS addr=34: xxxxxxxx
+PASS addr=35: xxxxxxxx
+PASS addr=36: xxxxxxxx
+PASS addr=37: xxxxxxxx
+PASS addr=38: xxxxxxxx
+PASS addr=39: xxxxxxxx
+PASS addr=40: xxxxxxxx
+PASS addr=41: xxxxxxxx
+PASS addr=42: xxxxxxxx
+PASS addr=43: xxxxxxxx
+PASS addr=44: xxxxxxxx
+PASS addr=45: xxxxxxxx
+PASS addr=46: xxxxxxxx
+PASS addr=47: xxxxxxxx
+PASS addr=48: xxxxxxxx
+PASS addr=49: xxxxxxxx
+PASS addr=50: xxxxxxxx
+PASS addr=51: xxxxxxxx
+PASS addr=52: xxxxxxxx
+PASS addr=53: xxxxxxxx
+PASS addr=54: xxxxxxxx
+PASS addr=55: xxxxxxxx
+PASS addr=56: xxxxxxxx
+PASS addr=57: xxxxxxxx
+PASS addr=58: xxxxxxxx
+PASS addr=59: xxxxxxxx
+PASS addr=60: xxxxxxxx
+PASS addr=61: xxxxxxxx
+PASS addr=62: xxxxxxxx
+PASS addr=63: xxxxxxxx
+
+========== ALL 64 PASSED ==========
+$finish called at time : 661 ns : File "C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_preamble_rom.sv" Line 91

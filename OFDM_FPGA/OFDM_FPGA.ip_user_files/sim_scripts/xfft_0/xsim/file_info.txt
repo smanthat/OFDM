@@ -1,0 +1,1 @@
+xfft_0.vhd,vhdl,xil_defaultlib,../../../../OFDM_FPGA.gen/sources_1/ip/xfft_0/sim/xfft_0.vhd,incdir="../../../../../../2025.2/Vivado/data/rsb/busdef"

@@ -1,4 +1,7 @@
-Running: xsim.dir/tb_qpsk_mapper_behav/xsimk.exe -simmode gui -wdb tb_qpsk_mapper_behav.wdb -simrunnum 0 -socket 50159
+Running: xsim.dir/tb_qpsk_mapper_behav/xsimk.exe -simmode gui -wdb tb_qpsk_mapper_behav.wdb -simrunnum 0 -socket 51755
 Design successfully loaded
-Design Loading Memory Usage: 11240 KB (Peak: 11240 KB)
-Design Loading CPU Usage: 15 ms
+Design Loading Memory Usage: 11544 KB (Peak: 11544 KB)
+Design Loading CPU Usage: 61 ms
+Simulation completed
+Simulation Memory Usage: 12816 KB (Peak: 12816 KB)
+Simulation CPU Usage: 218 ms

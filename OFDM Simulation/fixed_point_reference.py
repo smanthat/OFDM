@@ -19,4 +19,4 @@ def export_fixed_point(arr, filename, F, W):
     im = dec_to_fixed_point(arr.imag.flatten(), F, W)
     with open(filename, "w") as f:
         for r, i in zip(re, im):
-            f.write(f"{int(r) & 0xFFFF:04x} {int(i) & 0xFFFF:04x}\n")
+            f.write(f"{int(r) & 0xFFFF:04x}{int(i) & 0xFFFF:04x}\n")

@@ -1,7 +1,7 @@
 Vivado Simulator v2025.2
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
-Running: C:/Sourish/2025.2/Vivado/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_qpsk_mapper_behav xil_defaultlib.tb_qpsk_mapper xil_defaultlib.glbl -log elaborate.log 
+Running: C:/Sourish/2025.2/Vivado/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_preamble_rom_behav xil_defaultlib.tb_preamble_rom xil_defaultlib.glbl -log elaborate.log 
 Using 2 slave threads.
 Starting static elaboration
 Pass Through NonSizing Optimizer
@@ -9,7 +9,8 @@ Completed static elaboration
 Starting simulation data flow analysis
 Completed simulation data flow analysis
 Time Resolution for simulation is 1ps
-Compiling module xil_defaultlib.qpsk_mapper
-Compiling module xil_defaultlib.tb_qpsk_mapper
+Compiling package xil_defaultlib.fixed_pkg
+Compiling module xil_defaultlib.preamble_rom
+Compiling module xil_defaultlib.tb_preamble_rom
 Compiling module xil_defaultlib.glbl
-Built simulation snapshot tb_qpsk_mapper_behav
+Built simulation snapshot tb_preamble_rom_behav
