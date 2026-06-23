@@ -1,0 +1,7 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.ip_user_files/ip/xfft_0/xfft_0_stub.v" into library work
+INFO: [VRFC 10-311] analyzing module xfft_0
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sources_1/new/fixed_pkg.sv" into library work
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sources_1/new/ifft_wrapper.sv" into library work
+INFO: [VRFC 10-311] analyzing module ifft_wrapper
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_ifft_wrapper.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_ifft_wrapper

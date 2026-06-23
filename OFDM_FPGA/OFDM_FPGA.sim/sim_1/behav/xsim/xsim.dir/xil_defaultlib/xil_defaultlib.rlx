@@ -2,11 +2,8 @@
 2020.2
 Nov 14 2025
 19:37:27
+C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.gen/sources_1/ip/xfft_0/sim/xfft_0.vhd,1781887850,vhdl,,,,xfft_0,,,,,,,,
 C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.sim/sim_1/behav/xsim/glbl.v,1756381829,verilog,,,,glbl,,uvm,,,,,,
-C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_preamble_rom.sv,1781886365,systemVerilog,,,,tb_preamble_rom,,uvm,../../../../../../2025.2/Vivado/data/rsb/busdef,,,,,
-C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_qpsk_mapper.sv,1779905062,systemVerilog,,,,tb_qpsk_mapper,,uvm,../../../../../../2025.2/Vivado/data/rsb/busdef,,,,,
-C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_uart_tx.sv,1781806160,systemVerilog,,,,tb_uart_tx,,uvm,../../../../../../2025.2/Vivado/data/rsb/busdef,,,,,
-C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sources_1/new/fixed_pkg.sv,1781809564,systemVerilog,C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_preamble_rom.sv;C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sources_1/new/preamble_rom.sv,C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sources_1/new/preamble_rom.sv,,$unit_fixed_pkg_sv_1583011333;fixed_pkg,,uvm,../../../../../../2025.2/Vivado/data/rsb/busdef,,,,,
-C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sources_1/new/preamble_rom.sv,1781885821,systemVerilog,,C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_preamble_rom.sv,,preamble_rom,,uvm,../../../../../../2025.2/Vivado/data/rsb/busdef,,,,,
-C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sources_1/new/qpsk_mapper.sv,1779905133,systemVerilog,,C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_qpsk_mapper.sv,,qpsk_mapper,,uvm,../../../../../../2025.2/Vivado/data/rsb/busdef,,,,,
-C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sources_1/new/uart_tx.sv,1781741304,systemVerilog,C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_uart_tx.sv,C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_uart_tx.sv,,$unit_uart_tx_sv_90979792;uart_tx,,uvm,../../../../../../2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_ifft_wrapper.sv,1782183223,systemVerilog,,,,tb_ifft_wrapper,,uvm,../../../../../../2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sources_1/new/fixed_pkg.sv,1781809564,systemVerilog,C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_ifft_wrapper.sv;C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sources_1/new/ifft_wrapper.sv,C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sources_1/new/ifft_wrapper.sv,,$unit_fixed_pkg_sv_1583011333;fixed_pkg,,uvm,../../../../../../2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sources_1/new/ifft_wrapper.sv,1782194129,systemVerilog,,C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_ifft_wrapper.sv,,ifft_wrapper,,uvm,../../../../../../2025.2/Vivado/data/rsb/busdef,,,,,
