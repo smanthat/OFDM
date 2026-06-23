@@ -20,10 +20,6 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 import  fixed_pkg::*;
-typedef enum logic { 
-    CONFIG = 0,
-    RUN = 1
- } state_t;
 
 module ifft_wrapper(
     input logic clk, n_rst,
@@ -35,6 +31,11 @@ module ifft_wrapper(
     input logic out_ready,
     output logic out_last
     );
+    typedef enum logic { 
+    CONFIG = 0,
+    RUN = 1
+    } state_t;
+
     logic [7:0] s_axis_config_tdata;
     logic s_axis_config_tvalid, s_axis_config_tready;
 
@@ -69,6 +70,7 @@ module ifft_wrapper(
             CONFIG : if(s_axis_config_tvalid && s_axis_config_tready) begin
                 n_state = RUN;
             end
+            RUN : n_state = RUN;
             default : n_state = CONFIG;
         endcase
     end
@@ -76,12 +78,12 @@ module ifft_wrapper(
     always_ff @( posedge clk or negedge n_rst ) begin : blockName
         if(~n_rst) counter <= 0;
         else if(state == CONFIG) counter <= 0;
-        else if(counter != 6'b111111 && in_valid && in_ready) counter <= counter + 1;
-        else if(in_valid && in_ready) counter <= 0;
+        else if(in_valid && in_ready) counter <= counter + 1;
     end
 
 
     always_comb begin
+        s_axis_config_tvalid = 0;
         s_axis_config_tdata = 8'h54;
         s_axis_data_tdata = {in_data.im, in_data.re};
         s_axis_data_tvalid = (state == RUN) && in_valid;

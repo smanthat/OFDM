@@ -69,3 +69,6 @@ INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Sourish/2025.2/Vivado/da
 current_fileset: Time (s): cpu = 00:00:15 ; elapsed = 00:00:09 . Memory (MB): peak = 1678.609 ; gain = 183.250
 # xsim {tb_ifft_wrapper_sim} -autoloadwcfg
 Time resolution is 1 ps
+run all
+WARNING: File C:/Sourish/OFDM/OFDM Simulation/Verification_Files/frame_freq.hex referenced from process on C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_ifft_wrapper.sv at line 34 cannot be opened for reading. Please ensure that this file is available in the current working directory or parent directory of xsim.dir location specified via -xsimdir switch.
+WARNING: File C:/Sourish/OFDM/OFDM Simulation/Verification_Files/frame_time.hex referenced from process on C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_ifft_wrapper.sv at line 34 cannot be opened for reading. Please ensure that this file is available in the current working directory or parent directory of xsim.dir location specified via -xsimdir switch.

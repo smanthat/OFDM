@@ -32,12 +32,14 @@ module tb_ifft_wrapper;
     cplx_t       got      [0:63];
 
     initial begin
-        $readmemh("C:/Sourish/OFDM/OFDM Simulation/Verification_Files/frame_freq.hex", inputs);
-        $readmemh("C:/Sourish/OFDM/OFDM Simulation/Verification_Files/frame_time.hex", expected);
+        $readmemh("C:/Sourish/OFDM/OFDM Simulation/Verification_Files/frame_freq.txt", inputs);
+        $readmemh("C:/Sourish/OFDM/OFDM Simulation/Verification_Files/frame_time.txt", expected);
     end
 
-    int in_count = 0;
-    int out_count = 0;
+    int in_count;
+    int out_count;
+
+
     ifft_wrapper DUT (.clk(clk),.n_rst(n_rst),.in_data(in_data),.in_valid(in_valid),
     .in_ready(in_ready),.out_data(out_data),.out_valid(out_valid),
     .out_ready(out_ready),.out_last(out_last));
