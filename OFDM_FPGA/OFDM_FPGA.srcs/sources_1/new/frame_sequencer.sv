@@ -19,7 +19,7 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-
+import fixed_pkg::*;
 module frame_sequencer (
     input  logic  clk,
     input  logic  n_rst,
@@ -66,13 +66,16 @@ module frame_sequencer (
     preamble_rom #(.DEPTH(64), .INIT_FILE("C:/Sourish/OFDM/OFDM Simulation/Verification_Files/preamble_channel.txt")) u_channel_rom (
         .clk(clk), .addr(channel_addr), .data_out(channel_rom_out)
     );
-    bit_rom #(.DEPTH(256), .INIT_FILE("C:/Sourish/OFDM/OFDM Simulation/Verification_Files/bits.hex")) u_bit_rom (
+    bits_rom #(.DEPTH(256), .INIT_FILE("C:/Sourish/OFDM/OFDM Simulation/Verification_Files/bits.hex")) u_bit_rom (
         .clk(clk), .addr(bit_addr), .data_out(bit_rom_out)
     );
     qpsk_mapper u_mapper (
         .bits_in(qpsk_bits_in),
         .symbol_out(qpsk_symbol_out)
     );
+
+    logic fire;
+    assign fire = (state == ACTIVE) && out_ready;
 
 
     always_ff @( posedge clk or negedge n_rst ) begin 
@@ -89,7 +92,7 @@ module frame_sequencer (
         case(state)
             IDLE : if(start) n_state = WARMUP;
             WARMUP : n_state = ACTIVE;
-            ACTIVE : if(out_valid && out_ready && block_idx == NUM_BLOCKS-1 && sc_idx == NUM_SC - 1) n_state = DONE_S;
+            ACTIVE : if(fire && block_idx == NUM_BLOCKS-1 && sc_idx == NUM_SC - 1) n_state = DONE_S;
             DONE_S : n_state = IDLE;
             default : n_state = state;
         endcase
@@ -97,17 +100,21 @@ module frame_sequencer (
 
     // ----- counter NEXT values -----
     always_comb begin
-        sc_idx_next    = sc_idx;
-        block_idx_next = block_idx;
-        if (state == ACTIVE && out_valid && out_ready) begin
-            if (sc_idx == NUM_SC-1) begin
-                sc_idx_next    = '0;
-                block_idx_next = block_idx + 1;
-            end else begin
-                sc_idx_next = sc_idx + 1;
-            end
+    sc_idx_next    = sc_idx;
+    block_idx_next = block_idx;
+
+    if (fire) begin
+        if (sc_idx == NUM_SC-1) begin
+            sc_idx_next = '0;
+
+            if (block_idx != NUM_BLOCKS-1)
+                block_idx_next = block_idx + 1'b1;
+        end
+        else begin
+            sc_idx_next = sc_idx + 1'b1;
         end
     end
+end
 
     // ----- counter registers -----
     always_ff @(posedge clk or negedge n_rst) begin
@@ -124,49 +131,58 @@ module frame_sequencer (
     end
 
     always_comb begin
-        // bit_addr is the byte address: 16 bytes per data symbol, sc_idx/4 bytes into the symbol
-        bit_addr = (block_idx - DATA_START) * 16 + (sc_idx >> 2);
-
-        // Extract 2 bits from the byte (MSB-first within byte)
-        // sc_idx[1:0] picks which 2-bit field
-        // shift right by (3 - sc_idx[1:0]) * 2 to bring the desired pair to bits [1:0]
-        qpsk_bits_in = bit_rom_out[7 - (sc_idx[1:0]*2) -: 2];
-        out_data     = '0;
-        out_valid    = 1'b0;
-        done         = 1'b0;
-        timing_addr  = '0;
-        channel_addr = '0;
-            case(state)
-            IDLE: ;
-            WARMUP : begin 
-                timing_addr = sc_idx;
-                channel_addr = sc_idx;
-                out_valid = 0;
-            end
-            ACTIVE : begin 
-                timing_addr = sc_idx;
-                channel_addr = sc_idx;
-                if(block_idx == 0) out_data = timing_rom_out;
-                else if(block_idx == 1) out_data = channel_rom_out;
-                else out_data = qpsk_symbol_out;
-                out_valid = 1;
-            end
-            DONE_S : begin 
-                done = 1;
-                out_valid = 0;
-            end
-            default : begin
-                out_data     = '0;
-                out_valid    = 1'b0;
-                done         = 1'b0;
-                timing_addr  = '0;
-                channel_addr = '0;
-            end
-
-        endcase
+    if (block_idx_next >= DATA_START)
+        bit_addr = (block_idx_next - DATA_START) * 16 + (sc_idx_next >> 2);
+    else
+        bit_addr = '0;
     end
-
-
     
+    always_comb begin
+    case (sc_idx[1:0])
+        2'd0:    qpsk_bits_in = bit_rom_out[7:6];
+        2'd1:    qpsk_bits_in = bit_rom_out[5:4];
+        2'd2:    qpsk_bits_in = bit_rom_out[3:2];
+        2'd3:    qpsk_bits_in = bit_rom_out[1:0];
+        default: qpsk_bits_in = 2'b00;
+    endcase
+    end
+        
+
+always_comb begin
+    out_data     = '0;
+    done         = 1'b0;
+    timing_addr  = '0;
+    channel_addr = '0;
+
+    case (state)
+        IDLE: begin
+        end
+
+        WARMUP: begin
+            timing_addr  = sc_idx_next;
+            channel_addr = sc_idx_next;
+        end
+
+        ACTIVE: begin
+            timing_addr  = sc_idx_next;
+            channel_addr = sc_idx_next;
+
+            if (block_idx == 0)
+                out_data = timing_rom_out;
+            else if (block_idx == 1)
+                out_data = channel_rom_out;
+            else
+                out_data = qpsk_symbol_out;
+        end
+
+        DONE_S: begin
+            done = 1'b1;
+        end
+    endcase
+end
+
+assign out_valid = (state == ACTIVE);
+
+
 
 endmodule

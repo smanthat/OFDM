@@ -28,9 +28,9 @@ module tb_frame_sequencer;
     logic out_valid, out_ready;
 
     localparam int TOTAL_SAMPLES = 1152;
-    localparam string GOLDEN_FILE = "C:/Sourish/OFDM/OFDM Simulation/Verification_Files/frame_freq.hex";
+    localparam string GOLDEN_FILE = "C:/Sourish/OFDM/OFDM Simulation/Verification_Files/frame_freq.txt";
 
-    int out_count =0;
+    logic [13:0] out_count;
     int errors =0;
 
 
@@ -55,28 +55,49 @@ module tb_frame_sequencer;
     assign out_ready = 1'b1;
     
     always_ff @(posedge clk) begin
-        if (out_valid && out_ready && out_count < TOTAL_SAMPLES) begin
-            got_frame[out_count] <= out_data;
+        if(!n_rst)begin
+            out_count <= 0;
+        end
+        else if (out_valid && out_ready && out_count < TOTAL_SAMPLES) begin
+            got_frame[out_count] <= {out_data.re,out_data.im};
             out_count      <= out_count + 1;
         end
     end
     
     initial begin
+            
+
+        start =0;
 
         n_rst = 0;
         repeat(4) @(negedge clk);
     
         n_rst = 1;
 
+        repeat(4) @(negedge clk);
         start = 1;
         @(negedge clk);
         start = 0;
         
-        wait (out_count == TOTAL_SAMPLES);
+          fork
+        begin
+            wait(out_count == TOTAL_SAMPLES);
+        end
+
+        begin
+            repeat(TOTAL_SAMPLES + 100) @(negedge clk);
+            $fatal(1,
+                "TIMEOUT: only captured %0d/%0d samples. done=%0b out_valid=%0b out_ready=%0b",
+                out_count, TOTAL_SAMPLES, done, out_valid, out_ready
+            );
+        end
+    join_any
+    disable fork;
+
         @(negedge clk);
 
         for(int i = 0;i<TOTAL_SAMPLES;i++)begin
-            logic [31:0] got_p = {got_frame[i].re,got[i].im};
+            logic [31:0] got_p = got_frame[i];
             if(got_p !== expected_frame[i])begin
                 $display("TEST CASE FAILED: EXPECTED RE,IM -> %04h, %04h GOT RE/IM -> %04h, %04h", expected_frame[i][31:16], expected_frame[i][15:0],got_p[31:16],got_p[15:0]);
                 errors++;
@@ -92,5 +113,12 @@ module tb_frame_sequencer;
 
         $finish;
     end
+
+        initial begin
+    #20_000; // 20 us because timescale is 1ns / 1ps
+    $fatal(1, "TIMEOUT: out_count=%0d done=%0b out_valid=%0b out_ready=%0b",
+           out_count, done, out_valid, out_ready);
+    end
+    
 
 endmodule

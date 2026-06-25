@@ -1,0 +1,4 @@
+Running: xsim.dir/tb_frame_sequencer_behav/xsimk.exe -simmode gui -wdb tb_frame_sequencer_behav.wdb -simrunnum 0 -socket 64775
+Design successfully loaded
+Design Loading Memory Usage: 11604 KB (Peak: 11604 KB)
+Design Loading CPU Usage: 61 ms

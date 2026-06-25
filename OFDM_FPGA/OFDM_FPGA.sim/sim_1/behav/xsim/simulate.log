@@ -1,6 +1,1 @@
 Time resolution is 1 ps
-Test passed for bits_in = 00: I =   8192, Q =   8192
-Test passed for bits_in = 01: I =  -8192, Q =   8192
-Test passed for bits_in = 11: I =  -8192, Q =  -8192
-Test passed for bits_in = 10: I =   8192, Q =  -8192
-$finish called at time : 40 ns : File "C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_qpsk_mapper.sv" Line 57
