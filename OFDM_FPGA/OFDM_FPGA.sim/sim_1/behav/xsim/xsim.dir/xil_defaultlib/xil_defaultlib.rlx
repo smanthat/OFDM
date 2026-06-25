@@ -4,6 +4,10 @@ Nov 14 2025
 19:37:27
 C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.gen/sources_1/ip/xfft_0/sim/xfft_0.vhd,1781887850,vhdl,,,,xfft_0,,,,,,,,
 C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.sim/sim_1/behav/xsim/glbl.v,1756381829,verilog,,,,glbl,,uvm,,,,,,
+C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_bits_rom.sv,1782314923,systemVerilog,,,,tb_bit_rom,,uvm,../../../../../../2025.2/Vivado/data/rsb/busdef,,,,,
 C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_ifft_wrapper.sv,1782238022,systemVerilog,,,,tb_ifft_wrapper,,uvm,../../../../../../2025.2/Vivado/data/rsb/busdef,,,,,
-C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sources_1/new/fixed_pkg.sv,1781809564,systemVerilog,C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_ifft_wrapper.sv;C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sources_1/new/ifft_wrapper.sv,C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sources_1/new/ifft_wrapper.sv,,$unit_fixed_pkg_sv_1583011333;fixed_pkg,,uvm,../../../../../../2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_qpsk_mapper.sv,1782317851,systemVerilog,,,,tb_qpsk_mapper,,uvm,../../../../../../2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sources_1/new/bits_rom.sv,1782314559,systemVerilog,,C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_bits_rom.sv,,bits_rom,,uvm,../../../../../../2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sources_1/new/fixed_pkg.sv,1781809564,systemVerilog,C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_qpsk_mapper.sv;C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sources_1/new/qpsk_mapper.sv,C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sources_1/new/qpsk_mapper.sv,,$unit_fixed_pkg_sv_707750035;fixed_pkg,,uvm,../../../../../../2025.2/Vivado/data/rsb/busdef,,,,,
 C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sources_1/new/ifft_wrapper.sv,1782237386,systemVerilog,,C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_ifft_wrapper.sv,,ifft_wrapper,,uvm,../../../../../../2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sources_1/new/qpsk_mapper.sv,1782316910,systemVerilog,C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_qpsk_mapper.sv,C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_qpsk_mapper.sv,,qpsk_mapper,,uvm,../../../../../../2025.2/Vivado/data/rsb/busdef,,,,,

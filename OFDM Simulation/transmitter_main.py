@@ -24,11 +24,27 @@ BITS_PER_QPSK = 2
 W = 16  
 F = 13
 
+def export_bits_packed(bit_string, filename):
+    """Pack a string of '0'/'1' chars into bytes, MSB-first within each byte."""
+    # Pad to multiple of 8 if needed
+    while len(bit_string) % 8 != 0:
+        bit_string += "0"
+    
+    with open(filename, "w") as f:
+        for i in range(0, len(bit_string), 8):
+            byte_bits = bit_string[i:i+8]
+            byte_val = int(byte_bits, 2)   # MSB-first
+            f.write(f"{byte_val:02x}\n")
+
+# Use it:
+
+
 
 with open("OFDM Simulation/bits.txt", "r") as f:
     bit_string = f.read().strip()
 
 bit_string = "".join(bit_string.split())
+export_bits_packed(bit_string, "OFDM Simulation/Verification_Files/bits.hex")
 
 complex_bits, original_len = qpsk_mapper(bit_string)
 
