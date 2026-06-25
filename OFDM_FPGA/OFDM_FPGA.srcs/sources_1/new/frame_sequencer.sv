@@ -45,8 +45,8 @@ module frame_sequencer (
     state_t state, n_state;
 
     // ----- counters -----
-    logic [$clog2(NUM_BLOCKS)-1:0] block_idx;   // 5 bits, 0-17
-    logic [$clog2(NUM_SC)-1:0]     sc_idx;      // 6 bits, 0-63
+    logic [$clog2(NUM_BLOCKS)-1:0] block_idx, block_idx_next;   // 5 bits, 0-17
+    logic [$clog2(NUM_SC)-1:0]     sc_idx, sc_idx_next;      // 6 bits, 0-63
 
     // ----- ROM and mapper signals -----
     logic [$clog2(NUM_SC)-1:0]     timing_addr;
@@ -95,15 +95,32 @@ module frame_sequencer (
         endcase
     end
 
-    //counter
-    always_ff @(posedge clk)begin
-        if(state == IDLE) sc_idx <= 0;
-        else if(out_valid && out_ready && state  == ACTIVE) sc_idx <= sc_idx +1;
+    // ----- counter NEXT values -----
+    always_comb begin
+        sc_idx_next    = sc_idx;
+        block_idx_next = block_idx;
+        if (state == ACTIVE && out_valid && out_ready) begin
+            if (sc_idx == NUM_SC-1) begin
+                sc_idx_next    = '0;
+                block_idx_next = block_idx + 1;
+            end else begin
+                sc_idx_next = sc_idx + 1;
+            end
+        end
     end
 
-    always_ff @(posedge clk)begin
-        if(state == IDLE) block_idx <= 0;
-        else if(out_valid && out_ready && sc_idx == 6'd63 && state == ACTIVE) block_idx <= block_idx +1;
+    // ----- counter registers -----
+    always_ff @(posedge clk or negedge n_rst) begin
+        if (!n_rst) begin
+            sc_idx    <= '0;
+            block_idx <= '0;
+        end else if (state == IDLE) begin
+            sc_idx    <= '0;
+            block_idx <= '0;
+        end else begin
+            sc_idx    <= sc_idx_next;
+            block_idx <= block_idx_next;
+        end
     end
 
     always_comb begin
