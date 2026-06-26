@@ -54,6 +54,7 @@ module tb_frame_sequencer;
 
     assign out_ready = 1'b1;
     
+    
     always_ff @(posedge clk) begin
         if(!n_rst)begin
             out_count <= 0;
@@ -75,10 +76,9 @@ module tb_frame_sequencer;
         n_rst = 1;
 
         repeat(4) @(negedge clk);
-        start = 1;
-        @(negedge clk);
-        start = 0;
         
+
+
           fork
         begin
             wait(out_count == TOTAL_SAMPLES);
