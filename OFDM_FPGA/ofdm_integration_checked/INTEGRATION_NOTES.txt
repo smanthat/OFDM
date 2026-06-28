@@ -1,0 +1,48 @@
+Integration notes based on the uploaded files:
+
+1. Compile fixed_pkg.sv first.
+   Your cplx_t is a packed struct:
+     cplx_t = {re[15:0], im[15:0]}
+
+2. The byte_serializer intentionally sends bytes as:
+     re low, re high, im low, im high
+   Python reconstruction should read each 4-byte group as two little-endian int16 values:
+     re = int16(bytes[0:2], little)
+     im = int16(bytes[2:4], little)
+
+3. Your uploaded uart_tx.sv is fine for a basic isolated test only if data_in is held stable during the whole byte.
+   It is NOT integration-safe with an AXI-style byte source because it does not latch data_in.
+   Use uart_tx_fixed.sv in the top-level. It latches data_in when data_valid is accepted.
+
+4. Your fifo_sync.sv wraps fifo_generator_0. For your current wrapper/test style, configure fifo_generator_0 as:
+     - Native interface, not AXI-Stream
+     - Common clock / synchronous FIFO
+     - Write width = 32
+     - Write depth >= 2048
+     - Read width = 32
+     - First Word Fall Through (FWFT)
+   If it is not FWFT, out_valid = !empty will not mean dout is already valid.
+
+5. Your frame_sequencer has no out_last port. That is okay.
+   The ifft_wrapper internally asserts XFFT input tlast every 64 accepted samples using its counter.
+
+6. Your cp_insert has no in_last port. That is okay.
+   It writes exactly 64 samples, then outputs 80 samples with CP prepended.
+
+Recommended Vivado compile order:
+   fixed_pkg.sv
+   preamble_rom.sv
+   bits_rom.sv
+   qpsk_mapper.sv
+   frame_sequencer.sv
+   ifft_wrapper.sv
+   cp_insert.sv
+   fifo_sync.sv
+   byte_serializer.sv
+   uart_tx_fixed.sv
+   tx_top.sv
+
+Recommended tests:
+   tb_byte_serializer.sv
+   tb_uart_tx_fixed.sv
+   tb_tx_top_smoke.sv

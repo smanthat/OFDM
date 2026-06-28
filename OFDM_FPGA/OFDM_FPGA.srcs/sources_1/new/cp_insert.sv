@@ -121,6 +121,7 @@ module cp_insert (
         in_ready = 0;
         out_valid = 0;  
         out_last  = 0;   
+        out_data = 0;
         case(state)
             WRITE : begin 
                 in_ready  = 1;
@@ -139,8 +140,9 @@ module cp_insert (
             default : begin 
                 in_ready = 0;
                 out_valid = 0;
+                out_last  = 1'b0;
                 out_data = 0;
-
+    
             end
         endcase
     end

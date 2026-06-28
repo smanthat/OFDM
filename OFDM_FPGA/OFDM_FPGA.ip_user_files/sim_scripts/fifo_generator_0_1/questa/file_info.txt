@@ -1,0 +1,8 @@
+xpm_cdc.sv,systemverilog,xpm,../../../../../../Sourish/2025.2/Vivado/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv,incdir="../../../../../../2025.2/Vivado/data/rsb/busdef"
+xpm_memory.sv,systemverilog,xpm,../../../../../../Sourish/2025.2/Vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv,incdir="../../../../../../2025.2/Vivado/data/rsb/busdef"
+xpm_VCOMP.vhd,vhdl,xpm,../../../../../../Sourish/2025.2/Vivado/data/ip/xpm/xpm_VCOMP.vhd,incdir="../../../../../../2025.2/Vivado/data/rsb/busdef"
+fifo_generator_vlog_beh.v,verilog,fifo_generator_v13_2_14,../../../ipstatic/simulation/fifo_generator_vlog_beh.v,incdir="../../../../../../2025.2/Vivado/data/rsb/busdef"
+fifo_generator_v13_2_rfs.vhd,vhdl,fifo_generator_v13_2_14,../../../ipstatic/hdl/fifo_generator_v13_2_rfs.vhd,incdir="../../../../../../2025.2/Vivado/data/rsb/busdef"
+fifo_generator_v13_2_rfs.v,verilog,fifo_generator_v13_2_14,../../../ipstatic/hdl/fifo_generator_v13_2_rfs.v,incdir="../../../../../../2025.2/Vivado/data/rsb/busdef"
+fifo_generator_0.v,verilog,xil_defaultlib,../../../../OFDM_FPGA.gen/sources_1/ip/fifo_generator_0_1/sim/fifo_generator_0.v,incdir="../../../../../../2025.2/Vivado/data/rsb/busdef"
+glbl.v,Verilog,xil_defaultlib,glbl.v

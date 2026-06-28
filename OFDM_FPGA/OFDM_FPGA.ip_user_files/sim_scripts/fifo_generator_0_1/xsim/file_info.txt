@@ -1,0 +1,2 @@
+fifo_generator_0.v,verilog,xil_defaultlib,../../../../OFDM_FPGA.gen/sources_1/ip/fifo_generator_0_1/sim/fifo_generator_0.v,incdir="../../../../../../2025.2/Vivado/data/rsb/busdef"
+glbl.v,Verilog,xil_defaultlib,glbl.v
