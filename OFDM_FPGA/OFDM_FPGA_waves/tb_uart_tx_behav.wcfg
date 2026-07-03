@@ -3,106 +3,222 @@
    <wave_state>
    </wave_state>
    <db_ref_list>
-      <db_ref path="tb_cp_insert_behav.wdb" id="1">
+      <db_ref path="tb_top_behav.wdb" id="1">
          <top_modules>
             <top_module name="fixed_pkg" />
             <top_module name="glbl" />
-            <top_module name="tb_cp_insert" />
+            <top_module name="tb_top" />
+            <top_module name="vcomponents" />
          </top_modules>
       </db_ref>
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="1,475.001 ns"></ZoomEndTime>
-      <Cursor1Time time="1,475.000 ns"></Cursor1Time>
+      <ZoomEndTime time="2,509.251 ns"></ZoomEndTime>
+      <Cursor1Time time="2,563.851 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="179"></NameColumnWidth>
-      <ValueColumnWidth column_width="167"></ValueColumnWidth>
+      <ValueColumnWidth column_width="163"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="21" />
-   <wvobject fp_name="/tb_cp_insert/clk" type="logic">
+   <WVObjectSize size="9" />
+   <wvobject fp_name="/tb_top/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_cp_insert/n_rst" type="logic">
-      <obj_property name="ElementShortName">n_rst</obj_property>
-      <obj_property name="ObjectShortName">n_rst</obj_property>
+   <wvobject fp_name="/tb_top/btn_rst" type="logic">
+      <obj_property name="ElementShortName">btn_rst</obj_property>
+      <obj_property name="ObjectShortName">btn_rst</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_cp_insert/in_data" type="array">
-      <obj_property name="ElementShortName">in_data</obj_property>
-      <obj_property name="ObjectShortName">in_data</obj_property>
+   <wvobject fp_name="/tb_top/btn_start" type="logic">
+      <obj_property name="ElementShortName">btn_start</obj_property>
+      <obj_property name="ObjectShortName">btn_start</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_cp_insert/in_valid" type="logic">
-      <obj_property name="ElementShortName">in_valid</obj_property>
-      <obj_property name="ObjectShortName">in_valid</obj_property>
+   <wvobject fp_name="/tb_top/DUT/frame_seq_inst/done" type="logic">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">done</obj_property>
+      <obj_property name="ObjectShortName">done</obj_property>
+      <obj_property name="label">done_seq</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_cp_insert/in_ready" type="logic">
-      <obj_property name="ElementShortName">in_ready</obj_property>
-      <obj_property name="ObjectShortName">in_ready</obj_property>
+   <wvobject fp_name="group683" type="group">
+      <obj_property name="label">SEQ</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/tb_top/DUT/frame_seq_inst/out_data" type="array">
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="ElementShortName">out_data</obj_property>
+         <obj_property name="ObjectShortName">out_data</obj_property>
+         <obj_property name="label">out_data_seq</obj_property>
+         <obj_property name="CustomSignalColor">#00FFFF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/frame_seq_inst/out_valid" type="logic">
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="ElementShortName">out_valid</obj_property>
+         <obj_property name="ObjectShortName">out_valid</obj_property>
+         <obj_property name="label">out_valid_seq</obj_property>
+         <obj_property name="CustomSignalColor">#00FFFF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/frame_seq_inst/out_ready" type="logic">
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="ElementShortName">out_ready</obj_property>
+         <obj_property name="ObjectShortName">out_ready</obj_property>
+         <obj_property name="label">out_ready_seq</obj_property>
+         <obj_property name="CustomSignalColor">#00FFFF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/frame_seq_inst/state" type="array">
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="ElementShortName">state[1:0]</obj_property>
+         <obj_property name="ObjectShortName">state[1:0]</obj_property>
+         <obj_property name="label">state[1:0]_seq</obj_property>
+         <obj_property name="CustomSignalColor">#00FFFF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
    </wvobject>
-   <wvobject fp_name="/tb_cp_insert/in_last" type="logic">
-      <obj_property name="ElementShortName">in_last</obj_property>
-      <obj_property name="ObjectShortName">in_last</obj_property>
+   <wvobject fp_name="group689" type="group">
+      <obj_property name="label">IFFT</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/tb_top/DUT/ifft_inst/in_ready" type="logic">
+         <obj_property name="ElementShortName">in_ready</obj_property>
+         <obj_property name="ObjectShortName">in_ready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/ifft_inst/in_valid" type="logic">
+         <obj_property name="ElementShortName">in_valid</obj_property>
+         <obj_property name="ObjectShortName">in_valid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/ifft_inst/out_data" type="array">
+         <obj_property name="ElementShortName">out_data</obj_property>
+         <obj_property name="ObjectShortName">out_data</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/ifft_inst/out_valid" type="logic">
+         <obj_property name="ElementShortName">out_valid</obj_property>
+         <obj_property name="ObjectShortName">out_valid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/ifft_inst/out_ready" type="logic">
+         <obj_property name="ElementShortName">out_ready</obj_property>
+         <obj_property name="ObjectShortName">out_ready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/ifft_inst/out_last" type="logic">
+         <obj_property name="ElementShortName">out_last</obj_property>
+         <obj_property name="ObjectShortName">out_last</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/ifft_inst/state" type="other">
+         <obj_property name="ElementShortName">state</obj_property>
+         <obj_property name="ObjectShortName">state</obj_property>
+      </wvobject>
    </wvobject>
-   <wvobject fp_name="/tb_cp_insert/out_data" type="array">
-      <obj_property name="ElementShortName">out_data</obj_property>
-      <obj_property name="ObjectShortName">out_data</obj_property>
+   <wvobject fp_name="group698" type="group">
+      <obj_property name="label">CP</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/tb_top/DUT/cp_insert_inst/in_data" type="array">
+         <obj_property name="ElementShortName">in_data</obj_property>
+         <obj_property name="ObjectShortName">in_data</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/cp_insert_inst/in_valid" type="logic">
+         <obj_property name="ElementShortName">in_valid</obj_property>
+         <obj_property name="ObjectShortName">in_valid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/cp_insert_inst/in_ready" type="logic">
+         <obj_property name="ElementShortName">in_ready</obj_property>
+         <obj_property name="ObjectShortName">in_ready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/cp_insert_inst/out_data" type="array">
+         <obj_property name="ElementShortName">out_data</obj_property>
+         <obj_property name="ObjectShortName">out_data</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/cp_insert_inst/out_valid" type="logic">
+         <obj_property name="ElementShortName">out_valid</obj_property>
+         <obj_property name="ObjectShortName">out_valid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/cp_insert_inst/out_ready" type="logic">
+         <obj_property name="ElementShortName">out_ready</obj_property>
+         <obj_property name="ObjectShortName">out_ready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/cp_insert_inst/out_last" type="logic">
+         <obj_property name="ElementShortName">out_last</obj_property>
+         <obj_property name="ObjectShortName">out_last</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/cp_insert_inst/state" type="array">
+         <obj_property name="ElementShortName">state[1:0]</obj_property>
+         <obj_property name="ObjectShortName">state[1:0]</obj_property>
+      </wvobject>
    </wvobject>
-   <wvobject fp_name="/tb_cp_insert/out_valid" type="logic">
-      <obj_property name="ElementShortName">out_valid</obj_property>
-      <obj_property name="ObjectShortName">out_valid</obj_property>
+   <wvobject fp_name="group707" type="group">
+      <obj_property name="label">FIFO</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/tb_top/DUT/fifo_inst/in_data" type="array">
+         <obj_property name="ElementShortName">in_data[31:0]</obj_property>
+         <obj_property name="ObjectShortName">in_data[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/fifo_inst/in_valid" type="logic">
+         <obj_property name="ElementShortName">in_valid</obj_property>
+         <obj_property name="ObjectShortName">in_valid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/fifo_inst/in_ready" type="logic">
+         <obj_property name="ElementShortName">in_ready</obj_property>
+         <obj_property name="ObjectShortName">in_ready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/fifo_inst/out_data" type="array">
+         <obj_property name="ElementShortName">out_data[31:0]</obj_property>
+         <obj_property name="ObjectShortName">out_data[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/fifo_inst/out_valid" type="logic">
+         <obj_property name="ElementShortName">out_valid</obj_property>
+         <obj_property name="ObjectShortName">out_valid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/fifo_inst/out_ready" type="logic">
+         <obj_property name="ElementShortName">out_ready</obj_property>
+         <obj_property name="ObjectShortName">out_ready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/fifo_inst/wr_en" type="logic">
+         <obj_property name="ElementShortName">wr_en</obj_property>
+         <obj_property name="ObjectShortName">wr_en</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/fifo_inst/rd_en" type="logic">
+         <obj_property name="ElementShortName">rd_en</obj_property>
+         <obj_property name="ObjectShortName">rd_en</obj_property>
+      </wvobject>
    </wvobject>
-   <wvobject fp_name="/tb_cp_insert/out_ready" type="logic">
-      <obj_property name="ElementShortName">out_ready</obj_property>
-      <obj_property name="ObjectShortName">out_ready</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_cp_insert/out_last" type="logic">
-      <obj_property name="ElementShortName">out_last</obj_property>
-      <obj_property name="ObjectShortName">out_last</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_cp_insert/in_count" type="array">
-      <obj_property name="ElementShortName">in_count[31:0]</obj_property>
-      <obj_property name="ObjectShortName">in_count[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_cp_insert/out_count" type="array">
-      <obj_property name="ElementShortName">out_count[31:0]</obj_property>
-      <obj_property name="ObjectShortName">out_count[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_cp_insert/errors" type="array">
-      <obj_property name="ElementShortName">errors[31:0]</obj_property>
-      <obj_property name="ObjectShortName">errors[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_cp_insert/input_samples" type="array">
-      <obj_property name="ElementShortName">input_samples[0:63][31:0]</obj_property>
-      <obj_property name="ObjectShortName">input_samples[0:63][31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_cp_insert/expected_samples" type="array">
-      <obj_property name="ElementShortName">expected_samples[0:79][31:0]</obj_property>
-      <obj_property name="ObjectShortName">expected_samples[0:79][31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_cp_insert/got" type="array">
-      <obj_property name="ElementShortName">got[0:79]</obj_property>
-      <obj_property name="ObjectShortName">got[0:79]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_cp_insert/N" type="array">
-      <obj_property name="ElementShortName">N[31:0]</obj_property>
-      <obj_property name="ObjectShortName">N[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_cp_insert/CP_LEN" type="array">
-      <obj_property name="ElementShortName">CP_LEN[31:0]</obj_property>
-      <obj_property name="ObjectShortName">CP_LEN[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_cp_insert/OUT_LEN" type="array">
-      <obj_property name="ElementShortName">OUT_LEN[31:0]</obj_property>
-      <obj_property name="ObjectShortName">OUT_LEN[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_cp_insert/DUT/n_state" type="array">
-      <obj_property name="ElementShortName">n_state[1:0]</obj_property>
-      <obj_property name="ObjectShortName">n_state[1:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_cp_insert/DUT/state" type="array">
-      <obj_property name="ElementShortName">state[1:0]</obj_property>
-      <obj_property name="ObjectShortName">state[1:0]</obj_property>
+   <wvobject fp_name="group716" type="group">
+      <obj_property name="label">SERIAL</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/tb_top/DUT/ser_inst/in_data" type="array">
+         <obj_property name="ElementShortName">in_data</obj_property>
+         <obj_property name="ObjectShortName">in_data</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/ser_inst/in_valid" type="logic">
+         <obj_property name="ElementShortName">in_valid</obj_property>
+         <obj_property name="ObjectShortName">in_valid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/ser_inst/in_ready" type="logic">
+         <obj_property name="ElementShortName">in_ready</obj_property>
+         <obj_property name="ObjectShortName">in_ready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/ser_inst/out_data" type="array">
+         <obj_property name="ElementShortName">out_data[7:0]</obj_property>
+         <obj_property name="ObjectShortName">out_data[7:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/ser_inst/out_valid" type="logic">
+         <obj_property name="ElementShortName">out_valid</obj_property>
+         <obj_property name="ObjectShortName">out_valid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/ser_inst/out_ready" type="logic">
+         <obj_property name="ElementShortName">out_ready</obj_property>
+         <obj_property name="ObjectShortName">out_ready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/ser_inst/state" type="array">
+         <obj_property name="ElementShortName">state[1:0]</obj_property>
+         <obj_property name="ObjectShortName">state[1:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top/DUT/ser_inst/byte_idx" type="array">
+         <obj_property name="ElementShortName">byte_idx[1:0]</obj_property>
+         <obj_property name="ObjectShortName">byte_idx[1:0]</obj_property>
+      </wvobject>
    </wvobject>
 </wave_config>

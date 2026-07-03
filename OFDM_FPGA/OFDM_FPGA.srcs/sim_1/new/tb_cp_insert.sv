@@ -44,7 +44,6 @@ module tb_cp_insert;
         $readmemh("C:/Sourish/OFDM/OFDM Simulation/Verification_Files/frame_time.txt", input_samples);
         $readmemh("C:/Sourish/OFDM/OFDM Simulation/Verification_Files/frame_with_cp.txt", expected_samples);
     end
-
     // ----- DUT -----
     cp_insert DUT (
         .clk(clk), .n_rst(n_rst),
@@ -81,7 +80,7 @@ end
     // ----- output capture (parallel process) -----
     assign out_ready = 1'b1;
     always_ff @(posedge clk) begin
-        if (out_valid && out_ready && out_count < 80) begin
+        if (out_valid && out_ready && out_count < OUT_LEN) begin
             got[out_count] <= out_data;
             out_count      <= out_count + 1;
         end
