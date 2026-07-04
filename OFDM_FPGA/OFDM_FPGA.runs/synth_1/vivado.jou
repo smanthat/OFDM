@@ -1,0 +1,24 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Sat Jul  4 00:03:54 2026
+# Process ID         : 9192
+# Current directory  : C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.runs/synth_1
+# Command line       : vivado.exe -log top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source top.tcl
+# Log file           : C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.runs/synth_1/top.vds
+# Journal file       : C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.runs/synth_1\vivado.jou
+# Running On         : Sourish_PC
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 9 270 w/ Radeon 780M Graphics        
+# CPU Frequency      : 3993 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 33565 MB
+# Swap memory        : 42949 MB
+# Total Virtual      : 76514 MB
+# Available Virtual  : 27155 MB
+#-----------------------------------------------------------
+source top.tcl -notrace

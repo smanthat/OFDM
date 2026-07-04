@@ -15,5 +15,21 @@ Note:     - field_width = 6
 Time: 0 ps  Iteration: 1  Process: /tb_top/DUT/u_ifft/u1/U0/i_synth/axi_wrapper/gen_config_fifo_in/line__94240  File: C:/Sourish/2025.2/Vivado/data/ip/xilinx/xfft_v9_1/hdl/xfft_v9_1_vh_rfs.vhd
 Note:   - Copying SCALE_SCH from 6 downto 1 to 6 downto 1
 Time: 0 ps  Iteration: 1  Process: /tb_top/DUT/u_ifft/u1/U0/i_synth/axi_wrapper/gen_config_fifo_in/line__94240  File: C:/Sourish/2025.2/Vivado/data/ip/xilinx/xfft_v9_1/hdl/xfft_v9_1_vh_rfs.vhd
+Note:   - SCALING_SCH: in_ptr = 1, out_ptr = 1
+Time: 0 ps  Iteration: 0  Process: /tb_top/DUT/u_ifft/u1/U0/i_synth/axi_wrapper/gen_config_fifo_in/line__94240  File: C:/Sourish/2025.2/Vivado/data/ip/xilinx/xfft_v9_1/hdl/xfft_v9_1_vh_rfs.vhd
+Note:     - C_CHANNELS  = 1
+Time: 0 ps  Iteration: 0  Process: /tb_top/DUT/u_ifft/u1/U0/i_synth/axi_wrapper/gen_config_fifo_in/line__94240  File: C:/Sourish/2025.2/Vivado/data/ip/xilinx/xfft_v9_1/hdl/xfft_v9_1_vh_rfs.vhd
+Note:     - field_width = 6
+Time: 0 ps  Iteration: 0  Process: /tb_top/DUT/u_ifft/u1/U0/i_synth/axi_wrapper/gen_config_fifo_in/line__94240  File: C:/Sourish/2025.2/Vivado/data/ip/xilinx/xfft_v9_1/hdl/xfft_v9_1_vh_rfs.vhd
+Note:   - Copying SCALE_SCH from 6 downto 1 to 6 downto 1
+Time: 0 ps  Iteration: 0  Process: /tb_top/DUT/u_ifft/u1/U0/i_synth/axi_wrapper/gen_config_fifo_in/line__94240  File: C:/Sourish/2025.2/Vivado/data/ip/xilinx/xfft_v9_1/hdl/xfft_v9_1_vh_rfs.vhd
+Note:   - SCALING_SCH: in_ptr = 1, out_ptr = 1
+Time: 0 ps  Iteration: 1  Process: /tb_top/DUT/u_ifft/u1/U0/i_synth/axi_wrapper/gen_config_fifo_in/line__94240  File: C:/Sourish/2025.2/Vivado/data/ip/xilinx/xfft_v9_1/hdl/xfft_v9_1_vh_rfs.vhd
+Note:     - C_CHANNELS  = 1
+Time: 0 ps  Iteration: 1  Process: /tb_top/DUT/u_ifft/u1/U0/i_synth/axi_wrapper/gen_config_fifo_in/line__94240  File: C:/Sourish/2025.2/Vivado/data/ip/xilinx/xfft_v9_1/hdl/xfft_v9_1_vh_rfs.vhd
+Note:     - field_width = 6
+Time: 0 ps  Iteration: 1  Process: /tb_top/DUT/u_ifft/u1/U0/i_synth/axi_wrapper/gen_config_fifo_in/line__94240  File: C:/Sourish/2025.2/Vivado/data/ip/xilinx/xfft_v9_1/hdl/xfft_v9_1_vh_rfs.vhd
+Note:   - Copying SCALE_SCH from 6 downto 1 to 6 downto 1
+Time: 0 ps  Iteration: 1  Process: /tb_top/DUT/u_ifft/u1/U0/i_synth/axi_wrapper/gen_config_fifo_in/line__94240  File: C:/Sourish/2025.2/Vivado/data/ip/xilinx/xfft_v9_1/hdl/xfft_v9_1_vh_rfs.vhd
 ========== PASS: ALL 1440 SERIALIZED SAMPLES MATCH ==========
-$finish called at time : 75040 ns : File "C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_top.sv" Line 174
+$finish called at time : 5819650 ns : File "C:/Sourish/OFDM/OFDM_FPGA/OFDM_FPGA.srcs/sim_1/new/tb_top.sv" Line 160

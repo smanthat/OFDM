@@ -22,10 +22,9 @@ module tb_top;
     logic n_rst;
     logic start;
 
-    logic [7:0] out_data;
-    logic       out_valid;
-    logic       out_ready;
-    logic       seq_done;
+    logic tx_out;
+    logic uart_busy;
+    logic seq_done;
 
     int byte_count;
     int errors;
@@ -40,15 +39,15 @@ module tb_top;
         );
     end
 
-    top DUT (
+    top #(
+    .CLK_HZ(100_000_000),
+    .BAUD(10_000_000)   // fast sim baud
+) DUT (
         .clk       (clk),
         .n_rst     (n_rst),
         .start     (start),
-
-        .out_data  (out_data),
-        .out_valid (out_valid),
-        .out_ready (out_ready),
-
+        .tx_out    (tx_out),
+        .uart_busy (uart_busy),
         .seq_done  (seq_done)
     );
 
@@ -61,11 +60,9 @@ module tb_top;
         if (!n_rst) begin
             byte_count <= 0;
         end else begin
-            if (out_valid && out_ready) begin
-                if (byte_count < TOTAL_BYTES) begin
-                    got_bytes[byte_count] <= out_data;
+            if (DUT.uart_accept && byte_count < TOTAL_BYTES) begin
+                    got_bytes[byte_count] <= DUT.u_ser.out_data;
                     byte_count <= byte_count + 1;
-                end
             end
         end
     end
@@ -110,30 +107,19 @@ endfunction
 
             begin
                 repeat (TIMEOUT_CYCLES) @(posedge clk);
-
                 $display("========== TIMEOUT ==========");
                 $display("byte_count = %0d / %0d", byte_count, TOTAL_BYTES);
                 $display("seq_done   = %0b", seq_done);
-
-                $display("FIFO: out_valid=%0b out_ready=%0b",
-                    DUT.u_fifo.out_valid,
-                    DUT.u_fifo.out_ready
-                );
-
-                $display("SER: in_valid=%0b in_ready=%0b out_valid=%0b out_ready=%0b out_data=%02h",
-                    DUT.u_ser.in_valid,
-                    DUT.u_ser.in_ready,
-                    DUT.u_ser.out_valid,
-                    DUT.u_ser.out_ready,
-                    DUT.u_ser.out_data
-                );
-
+                $display("FIFO out_valid=%0b out_ready=%0b",
+                    DUT.u_fifo.out_valid, DUT.u_fifo.out_ready);
+                $display("SER in_valid=%0b in_ready=%0b out_valid=%0b out_ready=%0b out_data=%02h",
+                    DUT.u_ser.in_valid, DUT.u_ser.in_ready,
+                    DUT.u_ser.out_valid, DUT.u_ser.out_ready, DUT.u_ser.out_data);
                 $display("SER state=%0d byte_idx=%0d",
-                    DUT.u_ser.state,
-                    DUT.u_ser.byte_idx
-                );
-
-                $fatal(1, "Timed out before receiving all serialized bytes.");
+                    DUT.u_ser.state, DUT.u_ser.byte_idx);
+                $display("UART busy=%0b uart_accept=%0b",
+                    uart_busy, DUT.uart_accept);
+                $fatal(1, "Timed out before capturing all bytes.");
             end
         join_any
 
