@@ -8,19 +8,55 @@ The design takes a stored bitstream through QPSK mapping, frame assembly with sy
 
 ## Hardware results
 
-Target: **Xilinx Artix-7 XC7A100T-1CSG324** on the Digilent Nexys A7-100T, 100 MHz system clock.
+Target: **Xilinx Artix-7 XC7A100T-1CSG324** on the Digilent Nexys A7-100T, 100 MHz system clock. Vivado 2025.2.
 
-| Metric | Value | Utilization |
-|---|---|---|
-| Slice LUTs | 1,570 | 2.48% |
-| Slice Registers | 2,942 | 2.32% |
-| Block RAM tiles | 4 | 2.96% |
-| DSP slices | 6 | 2.50% |
-| Bonded IOB | 12 | 5.71% |
+### Timing
 
-**Timing:** all user-specified timing constraints met at 100 MHz on a −1 speed grade device. No setup, hold, or pulse-width violations post-route.
+| Metric | Value | Failing endpoints | Total endpoints |
+|---|---|---|---|
+| Worst Negative Slack (setup) | 2.709 ns | 0 | 8,049 |
+| Worst Hold Slack | 0.040 ns | 0 | 8,049 |
+| Worst Pulse Width Slack | 4.020 ns | 0 | 3,611 |
+| Total Negative Slack | 0.000 ns | — | — |
 
-**Verification:** 1,440 complex baseband samples (18 blocks × 80 samples) captured over UART and compared against the Python fixed-point reference. All samples fall within ±2 LSB of golden, with residual error attributable to rounding in the Xilinx FFT core.
+All user-specified timing constraints met. A setup slack of 2.709 ns against a 10.000 ns period implies **F_max ≈ 137 MHz** — roughly 37% headroom, on a −1 speed grade device (the slowest Artix-7 bin).
+
+### Utilization
+
+| Resource | Used | Available | % |
+|---|---|---|---|
+| Slice LUTs | 1,571 | 63,400 | 2.48 |
+| — as logic | 1,199 | 63,400 | 1.89 |
+| — as shift register | 372 | 19,000 | 1.96 |
+| Slice Registers (FF) | 2,942 | 126,800 | 2.32 |
+| Block RAM (RAMB18) | 4 | 270 | 1.48 |
+| DSP48E1 | 6 | 240 | 2.50 |
+| Bonded IOB | 13 | 210 | 6.19 |
+| BUFGCTRL | 1 | 32 | 3.13 |
+
+**By block:**
+
+| Block | LUTs | Registers | BRAM | DSP |
+|---|---|---|---|---|
+| Xilinx XFFT (64-point) | 1,461 | 2,754 | 0.5 | 6 |
+| FIFO Generator | 54 | 88 | 2 | 0 |
+| Hand-written RTL | 56 | 100 | 1.5 | 0 |
+
+The FFT core accounts for 93% of LUT usage and all six DSP slices. The sequencing, cyclic prefix, serialization, and UART logic together fit in under 60 LUTs — the design is IP-bound rather than control-bound.
+
+### Routing, DRC, power
+
+6,276 logical nets, 3,553 routable, **100% fully routed with zero routing errors**. Post-route DRC reports zero errors and zero critical warnings. Methodology checks flag three SYNTH-6 warnings (RAM block timing) and twelve TIMING-18 (missing I/O delay on the UART and button pins, which are asynchronous and not timed paths).
+
+Clocking is a single global domain on one BUFGCTRL driving 3,605 loads, with no MMCM or PLL — the 100 MHz board oscillator feeds the datapath directly.
+
+Total on-chip power **0.139 W** (0.042 W dynamic, 0.097 W static), junction temperature 25.6 °C.
+
+### Functional verification
+
+1,440 complex baseband samples (18 blocks × 80 samples) captured over UART and compared against the Python fixed-point golden model. All samples agree within **±2 LSB**.
+
+Bit-exact agreement is not achievable through a fixed-point FFT IP: the golden model quantizes once after a float64 transform, while the hardware requantizes at each of six butterfly stages plus the internal scaling schedule. Per-stage rounding accumulates as a random walk at roughly 1 LSB RMS, so the ±2 LSB threshold separates that noise floor from genuine logic errors.
 
 ---
 
@@ -169,7 +205,7 @@ OFDM_FPGA/                          Vivado project — synthesis, implementation
     cp_insert.sv                    FSM + circular buffer, CP insertion
     fifo_sync.sv                    rate decoupling FIFO
     byte_serializer.sv              32-bit → byte stream
-    uart_tx.sv                      115200 8N1 transmitter
+    uart_tx.sv                      115200 8N1 transmitter (uart_tx_fixed in top)
     button_sync.sv                  metastability-hardened button input
     top.sv                          integration, power-on reset
 
@@ -214,7 +250,9 @@ Vivado sim    hardware run → UART capture
    └──── compare ─┴──► python_verify.py
 ```
 
-`python_verify.py` reassembles the captured byte stream into signed 16-bit I/Q pairs, compares all 1,440 samples against the golden file, and reports per-sample error alongside maximum real and imaginary deviation. The ±2 LSB threshold separates rounding noise in the FFT core from genuine logic errors — a necessary distinction, since exact bit-match is not achievable through a fixed-point IP block with internal scaling.
+`python_verify.py` reassembles the captured byte stream into signed 16-bit I/Q pairs, compares all 1,440 samples against the golden file, and reports per-sample error alongside maximum real and imaginary deviation.
+
+Comparing per-stage rather than end-to-end localizes a failure to a single module instead of leaving a whole-chain mismatch to interpret.
 
 ---
 
