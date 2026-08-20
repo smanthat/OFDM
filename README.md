@@ -8,7 +8,7 @@ The design takes a stored bitstream through QPSK mapping, frame assembly with sy
 
 ## Hardware results
 
-Target: **Artix-7 XC7A100T** (Nexys A7-100T), 100 MHz system clock.
+Target: **Xilinx Artix-7 XC7A100T-1CSG324** on the Digilent Nexys A7-100T, 100 MHz system clock.
 
 | Metric | Value | Utilization |
 |---|---|---|
@@ -18,7 +18,7 @@ Target: **Artix-7 XC7A100T** (Nexys A7-100T), 100 MHz system clock.
 | DSP slices | 6 | 2.50% |
 | Bonded IOB | 12 | 5.71% |
 
-**Timing:** all user-specified timing constraints met at 100 MHz. No setup, hold, or pulse-width violations post-route.
+**Timing:** all user-specified timing constraints met at 100 MHz on a −1 speed grade device. No setup, hold, or pulse-width violations post-route.
 
 **Verification:** 1,440 complex baseband samples (18 blocks × 80 samples) captured over UART and compared against the Python fixed-point reference. All samples fall within ±2 LSB of golden, with residual error attributable to rounding in the Xilinx FFT core.
 
